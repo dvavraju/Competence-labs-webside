@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	
 	
-	<script>try{if(localStorage.getItem("__framer_force_showing_editorbar_since")){const n=document.createElement("link");n.rel = "modulepreload";n.href="https://framer.com/edit/init.mjs";document.head.appendChild(n)}}catch(e){}</script>
+	<!-- cl-disabled: Framer editor-bar trigger removed per request ("remove the edit icon which is sticky"). The original script conditionally injected Framer's floating edit toolbar (__framer-editorbar iframe) whenever localStorage.__framer_force_showing_editorbar_since was set in the visitor's browser. Disabling it at the source means the icon can never appear for any visitor/browser, regardless of that flag. Original: <script>try{if(localStorage.getItem("__framer_force_showing_editorbar_since")){const n=document.createElement("link");n.rel = "modulepreload";n.href="https://framer.com/edit/init.mjs";document.head.appendChild(n)}}catch(e){}</script> -->
 	<!-- Start of headStart -->
     
     <!-- End of headStart -->
@@ -192,6 +192,18 @@
 	<!-- Start of headEnd -->
     
     <!-- End of headEnd -->
+<style id="cl-hide-editor-bar">
+  /* Per request: "remove the edit icon which is sticky". The small circular
+     edit-toolbar button (#__framer-editorbar, a position:fixed, full-viewport
+     iframe clipped to a 1px circle pinned to the bottom-right corner via
+     clip-path) is rendered directly by Framer's bundled app code whenever
+     localStorage["__framer_force_showing_editorbar_since"] is set in the
+     visitor's browser — it is NOT gated by the small <head> trigger script
+     (which only preloads framer.com/edit/init.mjs and was separately disabled
+     above/below). Hiding it here at the CSS layer is the only fix that holds
+     regardless of that flag's state in any visitor's browser. */
+  #__framer-editorbar { display: none !important; }
+</style>
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="3d97e98a64dbb3dc6e8a6f767c47dcf2f4ba2135718055f806654ca3ba696044" data-no-nt></script>

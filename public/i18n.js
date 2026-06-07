@@ -396,17 +396,80 @@
     const wrapper = buildSwitcher();
     const select  = wrapper.querySelector('#cl-lang-select');
     document.body.appendChild(wrapper);
+    // Stay invisible until we've computed a real position beside MENU — a
+    // freshly-appended `position:fixed` element with no top/right yet would
+    // otherwise flash at its static (end-of-body) layout spot for a frame.
+    wrapper.style.visibility = 'hidden';
 
+    // ── Track MENU's live position and mirror it ────────────────────────────
     // Framer's header uses `position: relative` (it scrolls away with the
-    // page rather than staying sticky), so a one-time `position: fixed`
-    // placement would drift out of alignment with MENU as the user scrolls.
-    // Instead, continuously track MENU's live viewport position and mirror it.
-    function positionSwitcher() {
-      const menuEl = [...document.querySelectorAll('*')]
+    // page rather than staying sticky), so a one-time placement would drift
+    // out of alignment as the user scrolls — this needs continuous tracking.
+    // The standard way to do that is `window.addEventListener('scroll', ...)`
+    // — but THIS SITE RUNS LENIS (`<html class="lenis ...">`, a virtual/
+    // smooth-scroll library), and instrumenting window/document/body confirms
+    // it dispatches ZERO native `scroll` events while the page visibly
+    // scrolls. That listener was therefore silently dead code: it never
+    // fired, so the switcher froze at its last computed viewport position
+    // while MENU scrolled away beneath it — precisely the "floating
+    // disconnected from the logo/menu, stuck in the middle of the page"
+    // symptom being reported.
+    //
+    // Fix: drive tracking from requestAnimationFrame instead. rAF fires every
+    // rendered frame no matter *what* moved the page — native scroll, Lenis,
+    // a programmatic `scrollTo`, a resize, anything — so the switcher can
+    // never drift more than one frame out of sync. Kept cheap by caching the
+    // found button (no DOM re-querying in the hot loop) and only writing to
+    // styles when the computed position actually changed.
+
+    function findMenu() {
+      const textEl = [...document.querySelectorAll('*')]
         .find(e => e.children.length === 0 && e.textContent.trim() === 'MENU');
-      const r = menuEl ? menuEl.getBoundingClientRect() : null;
-      if (r && r.width > 0 && r.height > 0 && window.innerWidth > 100) {
-        // Place switcher just to the LEFT of MENU, vertically centred with it
+
+      // The bare "MENU" text node sits inside a padded button whose clickable
+      // hit-area is wider than the text alone (room for an icon + padding to
+      // its left). Positioning relative to the text made the switcher overlap
+      // part of that wider hit-area — climb up through cursor:pointer
+      // ancestors to find the actual button container and sit beside *it*.
+      let btn = textEl;
+      if (textEl) {
+        let el = textEl;
+        while (el.parentElement && getComputedStyle(el.parentElement).cursor === 'pointer') {
+          el = el.parentElement;
+        }
+        btn = el;
+      }
+      return { textEl: textEl, btn: btn };
+    }
+
+    let menu = findMenu();
+    let lastPositionKey = '';
+
+    function applyPosition() {
+      const r = menu.btn ? menu.btn.getBoundingClientRect() : null;
+      // `> 1` rather than `> 0` on purpose: this site plays an intro/splash
+      // animation and Framer fades/scales the header in on top of that — a
+      // button mid entrance-animation can report a 1px sliver rather than a
+      // clean zero. Either way it's "not a real anchor yet".
+      const ready = r && r.width > 1 && r.height > 1 && window.innerWidth > 100;
+
+      if (!ready) {
+        // MENU isn't laid out yet — still hydrating, mid entrance-animation,
+        // or (at some breakpoint/locale) rendered icon-only without the
+        // literal text "MENU". Stay hidden and let the search loop below keep
+        // looking, rather than jumping to a hardcoded corner: a switcher
+        // sitting at a fixed spot disconnected from the real button is
+        // exactly the bug this replaces.
+        if (wrapper.style.visibility !== 'hidden') wrapper.style.visibility = 'hidden';
+        return;
+      }
+
+      // Skip redundant style writes when nothing has actually moved since the
+      // last frame — keeps an idle page's rAF loop a cheap no-op past here.
+      const key = r.top + '|' + r.left + '|' + r.height + '|' + window.innerWidth + '|' + window.innerHeight;
+      if (key !== lastPositionKey) {
+        lastPositionKey = key;
+        // Place switcher just to the LEFT of the menu button, vertically centred with it
         const wh = wrapper.offsetHeight || 30;
         wrapper.style.top   = Math.round(r.top + (r.height - wh) / 2) + 'px';
         wrapper.style.right = Math.round(window.innerWidth - r.left + 12) + 'px';
@@ -414,26 +477,55 @@
         // doesn't appear to float disconnected from it.
         const offscreen = r.bottom < 0 || r.top > window.innerHeight;
         wrapper.style.visibility = offscreen ? 'hidden' : 'visible';
-      } else {
-        // Fallback: top-right corner (used only if MENU can't be located)
-        wrapper.style.top        = '20px';
-        wrapper.style.right      = '100px';
-        wrapper.style.visibility = 'visible';
       }
-      themeSwitcher(select, menuEl);
+      // Re-sample MENU's colour every frame too — some headers change colour
+      // per section as the page scrolls past them, and (per above) there's no
+      // `scroll` event to tell us when that happens here. themeSwitcher only
+      // writes styles when the derived theme actually differs, so this is a
+      // cheap no-op on the frames where nothing changed.
+      themeSwitcher(select, menu.textEl);
     }
 
-    positionSwitcher();
-    // Reposition/retheme a couple more times in case Framer's layout or
-    // header colour settles late (e.g. scroll-linked colour transitions)
-    setTimeout(positionSwitcher, 500);
-    setTimeout(positionSwitcher, 1500);
+    // Runs for the life of the page: continuously mirrors MENU's position.
+    (function trackLoop() {
+      applyPosition();
+      requestAnimationFrame(trackLoop);
+    })();
 
-    // Keep the switcher glued to MENU — and themed to match it — as the page
-    // scrolls/resizes, since Framer's header is not sticky and moves with
-    // the page content (and some headers change colour per section).
-    window.addEventListener('scroll', positionSwitcher, { passive: true });
-    window.addEventListener('resize', positionSwitcher);
+    // Belt-and-suspenders for rAF: browsers fully suspend
+    // requestAnimationFrame in backgrounded/hidden tabs (verified — zero
+    // callbacks fire while `document.hidden` is true), so if the visitor
+    // alt-tabs away mid-scroll and back, the tracker would otherwise sit
+    // frozen at a stale position until the next frame *after* the tab
+    // regains visibility. `setInterval` keeps running (throttled, but it
+    // runs) even while hidden, so this guarantees `applyPosition` re-syncs
+    // shortly after the tab becomes visible again — and costs nothing extra
+    // while rAF is already keeping things in sync (the dedupe in
+    // applyPosition makes a redundant call a same-frame no-op).
+    setInterval(applyPosition, 200);
+
+    // Re-locate MENU in the DOM periodically — NOT every frame, that would be
+    // a full `querySelectorAll('*')` walk of the page 60x/sec. This catches
+    // what the cached reference can't: MENU not present yet at injection time
+    // (Framer renders it async), Framer re-rendering the header during
+    // hydration, or a locale switch swapping the element outright. Quick at
+    // first — covering hydration/intro-animation timing (this used to be a
+    // fixed 0/500/1500ms schedule that could all land before MENU was ready
+    // and stick the switcher in a hardcoded fallback corner forever) — then
+    // settles into a light steady-state cadence.
+    let searchAttempts = 0;
+    (function searchLoop() {
+      menu = findMenu();
+      searchAttempts++;
+      setTimeout(searchLoop, searchAttempts < 20 ? 250 : 2000);
+    })();
+
+    // Native listeners too, in case Lenis is ever removed from the site —
+    // then these fire immediately rather than waiting for the next animation
+    // frame (which, in practice, is ≤ ~16ms later, so this is mostly just
+    // future-proofing rather than something we depend on today).
+    window.addEventListener('scroll', applyPosition, { passive: true });
+    window.addEventListener('resize', function () { menu = findMenu(); applyPosition(); });
   }
 
   // ── Apply translations (only when lang = 'en') ─────────────────────────────

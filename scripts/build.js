@@ -94,6 +94,20 @@ if (fs.existsSync(chunksDir)) {
   console.warn('  ⚠  public/framer-chunks/ not found')
 }
 
+// Copy local assets (e.g. public/assets/images/homepage-bg-wave.png, referenced
+// from index.html as /assets/images/...). In dev, Vite serves everything under
+// public/ from the site root automatically — this step replicates that for the
+// static dist/ build, which previously omitted public/assets/ entirely and
+// would have shipped with broken image references.
+console.log('\n🖼   Local assets:')
+const assetsDir     = path.join(root, 'public', 'assets')
+const assetsDestDir = path.join(distDir, 'assets')
+if (fs.existsSync(assetsDir)) {
+  copyDir(assetsDir, assetsDestDir)
+} else {
+  console.warn('  ⚠  public/assets/ not found')
+}
+
 console.log('\n✅  Build complete!\n')
 console.log('   Serve with:  npx serve dist  (or any static server)')
 console.log('   The /framer-chunks/ path must be reachable relative to the site root.\n')
