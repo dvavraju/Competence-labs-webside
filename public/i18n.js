@@ -209,6 +209,7 @@
     "Willkommen bei den zukünftigen Technologielösungen": "Welcome to Future Technology Solutions",
 
     // ── Contact / FAQ ───────────────────────────────────────────────────────
+    "Lass uns reden": "Let's talk",
     "Wir würden uns freuen, von Ihnen zu hören.": "We'd love to hear from you.",
     "Wir haben alles gehört. Hier finden Sie alles, was Sie wissen müssen, bevor Sie mit uns zusammenarbeiten.":
       "We've heard it all. Here's everything you need to know before working with us.",
@@ -289,40 +290,40 @@
   hideLocale.textContent = '.framer-locale-picker { display: none !important; }';
   document.head.appendChild(hideLocale);
 
-  // ── Inject language switcher UI ────────────────────────────────────────────
-  function injectSwitcher() {
-    if (document.getElementById('cl-lang-switcher')) return;
-
+  // ── Build the switcher DOM element ────────────────────────────────────────
+  function buildSwitcher() {
     const style = document.createElement('style');
     style.textContent = `
       #cl-lang-switcher {
         position: fixed;
-        top: 16px;
-        right: 20px;
+        display: inline-flex;
+        align-items: center;
         z-index: 999999;
         font-family: Inter, sans-serif;
       }
       #cl-lang-select {
         appearance: none;
         -webkit-appearance: none;
-        background: rgba(0,0,0,0.55);
-        border: 1px solid rgba(255,255,255,0.35);
-        color: #fff;
-        padding: 5px 28px 5px 10px;
+        padding: 5px 26px 5px 10px;
         font-size: 13px;
         font-weight: 600;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
         cursor: pointer;
         border-radius: 6px;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
-        background-position: right 8px center;
+        background-position: right 7px center;
         outline: none;
-        transition: border-color 0.2s;
+        transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+        white-space: nowrap;
+        /* Sensible defaults for pages where MENU can't be located to sample
+           a theme from (e.g. minimal placeholder pages with no header) —
+           dark-on-translucent matches the majority of this site's sections.
+           themeSwitcher() overrides these once a header is found. */
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.4);
+        background-color: rgba(255,255,255,0.06);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       }
-      #cl-lang-select:hover { border-color: rgba(255,255,255,0.7); }
       #cl-lang-select option { background: #1a1a1a; color: #fff; }
     `;
     document.head.appendChild(style);
@@ -336,23 +337,103 @@
 
     const optEN = document.createElement('option');
     optEN.value = 'en';
-    optEN.textContent = 'EN';
+    optEN.textContent = 'English';
     if (lang === 'en') optEN.selected = true;
 
     const optDE = document.createElement('option');
     optDE.value = 'de';
-    optDE.textContent = 'DE';
+    optDE.textContent = 'German';
     if (lang === 'de') optDE.selected = true;
 
     select.appendChild(optEN);
     select.appendChild(optDE);
     wrapper.appendChild(select);
-    document.body.appendChild(wrapper);
 
     select.addEventListener('change', function () {
       localStorage.setItem('cl-lang', this.value);
       location.reload();
     });
+
+    return wrapper;
+  }
+
+  // ── Theme the switcher to match the header it's sitting next to ────────────
+  // Some pages (e.g. Contact) have a light/white header, others (Home) have a
+  // dark hero. We sample MENU's live text colour and derive a matching
+  // light-on-dark or dark-on-light style so the switcher is always legible —
+  // a hardcoded white-on-transparent style disappears on white headers.
+  const CHEVRON_LIGHT = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")";
+  const CHEVRON_DARK  = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23161616' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")";
+
+  function themeSwitcher(select, menuEl) {
+    if (!menuEl) return;
+    const computed = window.getComputedStyle(menuEl).color; // e.g. "rgb(255, 255, 255)"
+    const nums = computed.match(/[\d.]+/g);
+    if (!nums || nums.length < 3) return;
+    const [r, g, b] = nums.map(Number);
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    const isLightHeader = luminance < 128; // dark MENU text → light header background
+
+    if (isLightHeader) {
+      select.style.color           = '#161616';
+      select.style.borderColor     = 'rgba(0,0,0,0.3)';
+      select.style.backgroundColor = 'rgba(0,0,0,0.04)';
+      select.style.backgroundImage = CHEVRON_DARK;
+    } else {
+      select.style.color           = '#fff';
+      select.style.borderColor     = 'rgba(255,255,255,0.4)';
+      select.style.backgroundColor = 'rgba(255,255,255,0.06)';
+      select.style.backgroundImage = CHEVRON_LIGHT;
+    }
+  }
+
+  // ── Inject language switcher beside the MENU button ────────────────────────
+  // Always appends to document.body as position:fixed — never modifies Framer's
+  // DOM tree (which would trigger unintended re-renders / flyouts).
+  // Position is computed from MENU's live getBoundingClientRect().
+  function injectSwitcher() {
+    if (document.getElementById('cl-lang-switcher')) return;
+    const wrapper = buildSwitcher();
+    const select  = wrapper.querySelector('#cl-lang-select');
+    document.body.appendChild(wrapper);
+
+    // Framer's header uses `position: relative` (it scrolls away with the
+    // page rather than staying sticky), so a one-time `position: fixed`
+    // placement would drift out of alignment with MENU as the user scrolls.
+    // Instead, continuously track MENU's live viewport position and mirror it.
+    function positionSwitcher() {
+      const menuEl = [...document.querySelectorAll('*')]
+        .find(e => e.children.length === 0 && e.textContent.trim() === 'MENU');
+      const r = menuEl ? menuEl.getBoundingClientRect() : null;
+      if (r && r.width > 0 && r.height > 0 && window.innerWidth > 100) {
+        // Place switcher just to the LEFT of MENU, vertically centred with it
+        const wh = wrapper.offsetHeight || 30;
+        wrapper.style.top   = Math.round(r.top + (r.height - wh) / 2) + 'px';
+        wrapper.style.right = Math.round(window.innerWidth - r.left + 12) + 'px';
+        // Hide while MENU is scrolled out of the viewport so the switcher
+        // doesn't appear to float disconnected from it.
+        const offscreen = r.bottom < 0 || r.top > window.innerHeight;
+        wrapper.style.visibility = offscreen ? 'hidden' : 'visible';
+      } else {
+        // Fallback: top-right corner (used only if MENU can't be located)
+        wrapper.style.top        = '20px';
+        wrapper.style.right      = '100px';
+        wrapper.style.visibility = 'visible';
+      }
+      themeSwitcher(select, menuEl);
+    }
+
+    positionSwitcher();
+    // Reposition/retheme a couple more times in case Framer's layout or
+    // header colour settles late (e.g. scroll-linked colour transitions)
+    setTimeout(positionSwitcher, 500);
+    setTimeout(positionSwitcher, 1500);
+
+    // Keep the switcher glued to MENU — and themed to match it — as the page
+    // scrolls/resizes, since Framer's header is not sticky and moves with
+    // the page content (and some headers change colour per section).
+    window.addEventListener('scroll', positionSwitcher, { passive: true });
+    window.addEventListener('resize', positionSwitcher);
   }
 
   // ── Apply translations (only when lang = 'en') ─────────────────────────────
@@ -387,13 +468,28 @@
 
   // ── Run on DOMContentLoaded, then again post-Framer hydration ──────────────
   function init() {
-    injectSwitcher();
     applyTranslations();
-    // Framer hydrates async — rerun after short delays to catch re-rendered nodes
+
+    // Framer hydrates async — rerun translations after short delays
     setTimeout(applyTranslations, 200);
     setTimeout(applyTranslations, 600);
     setTimeout(applyTranslations, 1500);
     setTimeout(applyTranslations, 3000);
+
+    // Switcher injection: retry until MENU is in the DOM (Framer renders it async)
+    let switcherAttempts = 0;
+    function trySwitcher() {
+      const menuText = [...document.querySelectorAll('*')]
+        .find(e => e.children.length === 0 && e.textContent.trim() === 'MENU');
+      if (menuText || switcherAttempts >= 20) {
+        injectSwitcher();
+      } else {
+        switcherAttempts++;
+        setTimeout(trySwitcher, 150);
+      }
+    }
+    trySwitcher();
+
     // MutationObserver for anything rendered after all timeouts
     setTimeout(startObserver, 3500);
   }
