@@ -37,6 +37,19 @@ const LOGO_CSS_AND_JS = `
 \t[data-framer-name="Main Black Background Logo"] img {
 \t\tcontent: url('/assets/images/logo-team.png') !important;
 \t}
+
+\t/* 4. Force Menu Overlay Text and Links to be White */
+\t.framer-xbsob7,
+\t.framer-xbsob7 *,
+\t.framer-1w3jqcb,
+\t.framer-1w3jqcb *,
+\t.framer-1oywgs7,
+\t.framer-1oywgs7 * {
+\t\tcolor: #ffffff !important;
+\t\t--framer-text-color: #ffffff !important;
+\t\t--extracted-r6o4lv: #ffffff !important;
+\t\t-webkit-text-fill-color: #ffffff !important;
+\t}
 \t</style>
 \t<script id="cl-global-header-logo-script">
 \t(function() {
