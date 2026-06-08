@@ -395,6 +395,53 @@
      (or change `display: none` back to nothing/`block`). */
   #hero { display: none !important; }
 </style>
+<style id="cl-description-section-bg">
+  /* Per request: replace the background photo inside the homepage
+     "Description" section (id="description") -> "Img" -> "Image" -> "BG"
+     with the supplied product photo (dropper bottle + grapefruit). The
+     original is an actual <img> inside [data-framer-background-image-wrapper],
+     not a CSS background, so we hide that <img> and paint our replacement
+     as a cover background on the wrapper instead -- same technique used for
+     the Services hero swap (.framer-959bvb). .framer-p2fn6x ("BG") only
+     occurs inside this section's three responsive variants (Desktop/Phone/
+     Tablet), so no extra scoping is needed. */
+  .framer-p2fn6x,
+  .framer-p2fn6x [data-framer-background-image-wrapper="true"] {
+    background-image: url('/assets/images/description-section-bg.png') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+  }
+  .framer-p2fn6x img {
+    display: none !important;
+    opacity: 0 !important;
+  }
+</style>
+<style id="cl-cta-light-theme">
+  /* "Unsere Lösung: der Competence Labs Way" CTA section. Per follow-up
+     request: keep the dark wave-photo background exactly as-is — only the
+     content panel sitting on top of it ("the layer") should turn white, with
+     its text turned fully black to stay legible on that new white layer.
+     Scoped to #cta (.framer-14b5mc9), which only exists on the homepage. */
+
+  /* The "CTA banner" content panel (.framer-1h5x1o3) is a rounded 40px card
+     inset from the section edges (so the photo shows around it) that carried
+     its own rgba(0,0,0,0.79) dark scrim for legibility against the photo.
+     Swap that scrim for solid white -- this is "the layer" the request means. */
+  #cta .framer-1h5x1o3 {
+    background-color: #ffffff !important;
+  }
+
+  /* Recolor every text element on that layer (heading, body copy, emphasis
+     spans inside it, the "Nehmen Sie Kontakt auf" link, and "Vereinbaren Sie
+     einen Anruf mit unserem Team") from white/grey to solid black so it reads
+     against the new white card. */
+  #cta .framer-text {
+    --framer-text-color: #000000 !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+</style>
 
 	
 

@@ -1057,6 +1057,119 @@
 	})();
 	</script>
 	
+<script id="cl-services-extra-cards">
+(function () {
+  var SPECS = [
+    {
+      marker: 'cl-card-mktstrat',
+      icon: '/assets/images/icon-marketing-strategies.png',
+      iconW: 572,
+      iconH: 487,
+      title: 'Marketingstrategien',
+      subtitle: 'Für Sichtbarkeit und Wachstum',
+      delay: 0
+    },
+    {
+      marker: 'cl-card-culture2',
+      icon: '/assets/images/icon-culture-work-2.png',
+      iconW: 427,
+      iconH: 537,
+      title: 'Kulturarbeit',
+      subtitle: 'Verändern Sie, wie Ihre Mitarbeiter denken und Höchstleistungen erbringen',
+      delay: 120
+    }
+  ];
+
+  function fillCard(card, spec) {
+    card.classList.add(spec.marker);
+    card.setAttribute('data-cl-injected-card', spec.marker);
+    card.removeAttribute('id');
+
+    card.querySelectorAll('img').forEach(function (img) {
+      img.removeAttribute('srcset');
+      img.src = spec.icon;
+      img.width = spec.iconW;
+      img.height = spec.iconH;
+      img.alt = spec.title;
+    });
+
+    card.querySelectorAll('strong.framer-text').forEach(function (el) {
+      el.textContent = spec.title;
+    });
+
+    card.querySelectorAll('p.framer-text, p[dir="auto"]').forEach(function (el) {
+      if (el.querySelector('strong')) return;
+      el.textContent = spec.subtitle;
+    });
+  }
+
+  function revealStyle(card, visible) {
+    card.style.willChange = 'transform';
+    card.style.transition = 'opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)';
+    if (visible) {
+      card.style.opacity = '1';
+      card.style.transform = 'perspective(1200px) translateY(0px)';
+    } else {
+      card.style.opacity = '0';
+      card.style.transform = 'perspective(1200px) translateY(50px)';
+    }
+  }
+
+  function observeReveal(card, delay) {
+    if (card.__clRevealObserved) return;
+    card.__clRevealObserved = true;
+    revealStyle(card, false);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        setTimeout(function () { revealStyle(card, true); }, delay);
+        io.unobserve(card);
+      });
+    }, { threshold: 0.15 });
+    io.observe(card);
+  }
+
+  function ensureCards(grid) {
+    var template = null;
+    var cards = grid.querySelectorAll(':scope > [data-framer-name^="Card "]');
+    for (var i = cards.length - 1; i >= 0; i--) {
+      if (!cards[i].hasAttribute('data-cl-injected-card')) { template = cards[i]; break; }
+    }
+    if (!template) return;
+
+    SPECS.forEach(function (spec) {
+      var existing = grid.querySelector('.' + spec.marker);
+      if (existing) {
+        observeReveal(existing, spec.delay);
+        return;
+      }
+      var card = template.cloneNode(true);
+      fillCard(card, spec);
+      grid.appendChild(card);
+      observeReveal(card, spec.delay);
+    });
+  }
+
+  function patch() {
+    document.querySelectorAll('[data-framer-name="Cards"] .framer-h49kn8').forEach(function (grid) {
+      if (grid.querySelectorAll(':scope > [data-framer-name^="Card "]').length < 6) return;
+      ensureCards(grid);
+    });
+  }
+
+  patch();
+  var interval = setInterval(patch, 250);
+  setTimeout(function () { clearInterval(interval); }, 15000);
+  var observer = new MutationObserver(patch);
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  } else {
+    document.addEventListener('DOMContentLoaded', function () {
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  }
+})();
+</script>
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="3d97e98a64dbb3dc6e8a6f767c47dcf2f4ba2135718055f806654ca3ba696044" data-no-nt></script>

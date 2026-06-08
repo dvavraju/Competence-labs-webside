@@ -210,6 +210,10 @@
     "Unternehmen transformieren": "Transform Companies",
     "Leistungen": "Services",
     "Kulturarbeit": "Culture Work",
+    "Marketingstrategien": "Marketing Strategies",
+    "Für Sichtbarkeit und Wachstum": "For Visibility and Growth",
+    "Verändern Sie, wie Ihre Mitarbeiter denken und Höchstleistungen erbringen":
+      "Transform how your people think & perform",
     "Suchmaschinenoptimierung (SEO)": "Search Engine Optimization (SEO)",
     "Bezahlte Werbung": "Paid Advertising",
     "Verfahren": "Process",
@@ -297,6 +301,11 @@
     "Contact Us": "Kontakt aufnehmen",
     "Contact us": "Kontaktieren Sie uns",
     "Point of Contact": "Ansprechpartner",
+    "Branding & Design": "Branding und Design",
+    "We are in talks to bring a great CMO. Will update you people soon":
+      "Wir sind im Gespräch, um eine großartige CMO zu gewinnen. Wir halten Sie auf dem Laufenden.",
+    "We develop comprehensive brand identities, including logo design, visual language, messaging architecture, and brand guidelines, for both new and rebranding clients.":
+      "Wir entwickeln umfassende Markenidentitäten – einschließlich Logodesign, visueller Sprache, Botschaftsarchitektur und Markenrichtlinien – für neue Kunden und für Kunden im Rebranding-Prozess.",
   };
 
   // ── Utilities ──────────────────────────────────────────────────────────────
