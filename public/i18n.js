@@ -207,6 +207,23 @@
     "Vom Konzept bis zur Markteinführung setzen wir uns mit schnellen Reaktionszeiten und persönlicher Liebe zum Detail für Ihren Erfolg ein.":
       "From concept to launch, we are committed to your success with fast response times and personal attention to detail.",
     "Willkommen bei den zukünftigen Technologielösungen": "Welcome to Future Technology Solutions",
+    "Unternehmen transformieren": "Transform Companies",
+    "Leistungen": "Services",
+    "Kulturarbeit": "Culture Work",
+    "Suchmaschinenoptimierung (SEO)": "Search Engine Optimization (SEO)",
+    "Bezahlte Werbung": "Paid Advertising",
+    "Verfahren": "Process",
+    "Talent-First-Ansatz": "Talent-First Approach",
+    "Kulturgetriebenes Wachstum": "Culture-Driven Growth",
+    "Kulturorientierte Teambildung": "Culture-oriented team building",
+    "Partnerorientiert": "Partner-oriented",
+    "WACHSTUM IN BEWEGUNG": "GROWTH IN MOTION",
+    "Die Zahlen hinter unseren Strategien sagen mehr als Worte.":
+      "The numbers behind our strategies speak louder than words.",
+    "Was uns antreibt": "What drives us",
+    "Der Mensch zuerst": "People first",
+    "Strategische Beschaffung": "Strategic Sourcing",
+    "Kulturorientiert": "Culture-oriented",
 
     // ── Contact / FAQ ───────────────────────────────────────────────────────
     "Lass uns reden": "Let's talk",
@@ -259,15 +276,63 @@
     "Didem": "Didem",
   };
 
+  // ── English strings hardcoded into the (German) source content ─────────────
+  // A handful of text layers were authored in English and never localized —
+  // some live directly in the page HTML, others are baked into compiled
+  // Framer chunks as static fallback values, so they show up in both
+  // languages unless we translate them back to German on the 'de' pass.
+  const EN_TO_DE = {
+    "Move your mouse across the Screen":
+      "Bewegen Sie Ihre Maus über den Bildschirm",
+    "Marketing campaigns": "Marketingkampagnen",
+    "Our Culture Work services are grounded in proven psychological and transformational frameworks. We integrate various workshops to help organizations align subconscious beliefs with strategic goals for lasting cultural change":
+      "Unsere Culture-Work-Leistungen basieren auf bewährten psychologischen und transformativen Rahmenwerken. Wir integrieren verschiedene Workshops, die Organisationen dabei helfen, unbewusste Überzeugungen mit strategischen Zielen in Einklang zu bringen, um einen nachhaltigen kulturellen Wandel zu erreichen",
+    "Our team and what we believe in": "Unser Team und woran wir glauben",
+    "25+ years of collective experience in design and marketing":
+      "25+ Jahre gemeinsame Erfahrung in Design und Marketing",
+    "We needed a full rebranding, and this agency delivered beyond our expectations. From the new logo to the website design, everything feels cohesive and professional.":
+      "Wir brauchten ein komplettes Rebranding, und diese Agentur hat unsere Erwartungen übertroffen. Vom neuen Logo bis zum Website-Design wirkt alles stimmig und professionell.",
+    "Working with this team was a pleasure! Our sales increased by 30% in the first month. Thank you for the amazing job!":
+      "Die Zusammenarbeit mit diesem Team war eine Freude! Unser Umsatz stieg im ersten Monat um 30 %. Vielen Dank für die großartige Arbeit!",
+    "Contact Us": "Kontakt aufnehmen",
+    "Contact us": "Kontaktieren Sie uns",
+    "Point of Contact": "Ansprechpartner",
+  };
+
   // ── Utilities ──────────────────────────────────────────────────────────────
   const lang = localStorage.getItem('cl-lang') || 'en';
 
   /**
-   * Walk all text nodes under root and replace German matches.
-   * Trims surrounding whitespace before lookup so Framer's trailing-space
-   * text nodes still match, then re-applies the original whitespace padding.
+   * Some Framer headings split each letter into its own <span> for a
+   * scroll-reveal animation (e.g. "Unsere" / "Leistungen"). translateNodes
+   * can't match those — each text node is a single character — so detect
+   * the whole-word span groups, look up the combined word, and collapse
+   * them to a plain text node with the translation.
    */
-  function translateNodes(root) {
+  function translateLetterSpanHeadings(root, dict) {
+    root.querySelectorAll('span').forEach(function (el) {
+      const kids = el.children;
+      if (kids.length < 2) return;
+      for (let i = 0; i < kids.length; i++) {
+        const k = kids[i];
+        if (k.tagName !== 'SPAN' || k.children.length > 0 || k.textContent.length > 2) return;
+      }
+      const combined = el.textContent;
+      const translated = dict[combined.trim()];
+      if (translated !== undefined) {
+        el.textContent = translated;
+      }
+    });
+  }
+
+  /**
+   * Walk all text nodes under root and replace matches from the given dict
+   * (DE_TO_EN for the 'en' pass, EN_TO_DE for the 'de' pass — same machinery,
+   * opposite direction). Trims surrounding whitespace before lookup so
+   * Framer's trailing-space text nodes still match, then re-applies the
+   * original whitespace padding.
+   */
+  function translateNodes(root, dict) {
     const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
     const nodes = [];
     let n;
@@ -275,12 +340,12 @@
     for (const node of nodes) {
       const raw = node.textContent;
       const trimmed = raw.trim();
-      const en = DE_TO_EN[trimmed];
-      if (en !== undefined) {
+      const translated = dict[trimmed];
+      if (translated !== undefined) {
         // Re-apply any leading/trailing whitespace the original node had
         const leading  = raw.match(/^\s*/)[0];
         const trailing = raw.match(/\s*$/)[0];
-        node.textContent = leading + en + trailing;
+        node.textContent = leading + translated + trailing;
       }
     }
   }
@@ -309,18 +374,22 @@
         font-weight: 600;
         letter-spacing: 0.04em;
         cursor: pointer;
-        border-radius: 6px;
+        /* Match the pill-shaped wrapper's radius and leave bordering to it —
+           the wrapper (#cl-lang-switcher, styled in inject-custom.js) already
+           draws the outline; giving the select its own border too produced a
+           doubled "outline within an outline" look. */
+        border-radius: 20px;
+        border: none;
         background-repeat: no-repeat;
         background-position: right 7px center;
         outline: none;
-        transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+        transition: background-color 0.2s, color 0.2s;
         white-space: nowrap;
         /* Sensible defaults for pages where MENU can't be located to sample
            a theme from (e.g. minimal placeholder pages with no header) —
            dark-on-translucent matches the majority of this site's sections.
            themeSwitcher() overrides these once a header is found. */
         color: #fff;
-        border: 1px solid rgba(255,255,255,0.4);
         background-color: rgba(255,255,255,0.06);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       }
@@ -376,12 +445,10 @@
 
     if (isLightHeader) {
       select.style.color           = '#161616';
-      select.style.borderColor     = 'rgba(0,0,0,0.3)';
       select.style.backgroundColor = 'rgba(0,0,0,0.04)';
       select.style.backgroundImage = CHEVRON_DARK;
     } else {
       select.style.color           = '#fff';
-      select.style.borderColor     = 'rgba(255,255,255,0.4)';
       select.style.backgroundColor = 'rgba(255,255,255,0.06)';
       select.style.backgroundImage = CHEVRON_LIGHT;
     }
@@ -528,16 +595,25 @@
     window.addEventListener('resize', function () { menu = findMenu(); applyPosition(); });
   }
 
-  // ── Apply translations (only when lang = 'en') ─────────────────────────────
+  // ── Apply translations: DE → EN when lang='en', EN → DE cleanup when lang='de'
+  function currentDict() {
+    if (lang === 'en') return DE_TO_EN;
+    if (lang === 'de') return EN_TO_DE;
+    return null;
+  }
+
   function applyTranslations() {
-    if (lang !== 'en') return;
-    translateNodes(document.body);
+    const dict = currentDict();
+    if (!dict) return;
+    translateNodes(document.body, dict);
+    translateLetterSpanHeadings(document.body, dict);
   }
 
   // ── MutationObserver: catch text added by Framer after hydration ───────────
   let observerPaused = false;
   function startObserver() {
-    if (lang !== 'en') return;
+    const dict = currentDict();
+    if (!dict) return;
     const observer = new MutationObserver(function (mutations) {
       if (observerPaused) return;
       let hasText = false;
@@ -551,7 +627,7 @@
       }
       if (!hasText) return;
       observerPaused = true;
-      translateNodes(document.body);
+      translateNodes(document.body, dict);
       // Resume after a tick so we don't loop
       setTimeout(() => { observerPaused = false; }, 50);
     });
@@ -562,11 +638,16 @@
   function init() {
     applyTranslations();
 
-    // Framer hydrates async — rerun translations after short delays
+    // Framer hydrates async — rerun translations after short delays.
+    // Some components (e.g. the rotating hero caption) mount as late as
+    // ~3.3s, right at the edge of the old final pass, so extend coverage
+    // a bit further out to reliably catch them too.
     setTimeout(applyTranslations, 200);
     setTimeout(applyTranslations, 600);
     setTimeout(applyTranslations, 1500);
     setTimeout(applyTranslations, 3000);
+    setTimeout(applyTranslations, 4000);
+    setTimeout(applyTranslations, 5500);
 
     // Switcher injection: retry until MENU is in the DOM (Framer renders it async)
     let switcherAttempts = 0;
@@ -582,8 +663,13 @@
     }
     trySwitcher();
 
-    // MutationObserver for anything rendered after all timeouts
-    setTimeout(startObserver, 3500);
+    // Start observing immediately rather than after the fixed-delay passes —
+    // some Framer components (e.g. the rotating hero caption) mount at a
+    // variable time that can land in the gap between the last scheduled
+    // applyTranslations() and a late observer start, permanently missing
+    // the translation. observerPaused already guards against feedback loops
+    // from our own writes, so an early start is safe.
+    startObserver();
   }
 
   if (document.readyState === 'loading') {

@@ -198,6 +198,96 @@
 	
 
 
+	
+
+
+	
+
+
+	
+
+
+	
+
+
+	
+
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
 	/* Hide original responsive CDN logo images to prevent srcset override and flickers */
@@ -206,16 +296,17 @@
 	img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
 	header img,
 	.framer-1ed0056 img,
-	.framer-joevt5 img,
-	.framer-1otr4zy img,
-	.framer-1xnime3 img,
-	.framer-2ufe3c-container img {
+	.framer-joevt5 img {
 		display: none !important;
 		opacity: 0 !important;
 	}
 
-	/* Enlarge the header logo container */
-	.framer-joevt5 {
+	/* Enlarge the header logo container. Some pages (About, Contact) render a
+	   different responsive header variant whose logo carries the class
+	   framer-ffav11 instead of framer-joevt5, so match it by its stable
+	   data-framer-name too -- scoped to header to avoid the team-section logo. */
+	.framer-joevt5,
+	header [data-framer-name="Main Black Background Logo"] {
 		width: 155px !important;
 		height: 40px !important;
 	}
@@ -223,18 +314,35 @@
 	/* 1. Header Logo & Description Section Logo background replacement */
 	.framer-joevt5,
 	.framer-joevt5 [data-framer-background-image-wrapper="true"],
-	.framer-1otr4zy,
-	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+	header [data-framer-name="Main Black Background Logo"],
+	header [data-framer-name="Main Black Background Logo"] [data-framer-background-image-wrapper="true"] {
 		background-image: url('/assets/images/logo.png') !important;
 		background-size: contain !important;
 		background-repeat: no-repeat !important;
 		background-position: left center !important;
 	}
-	
-	/* Align description section logo to center */
+
 	.framer-1otr4zy,
 	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+		background-image: url('/assets/images/logo.png') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
 		background-position: center !important;
+	}
+
+	/* The home page "Erfolgsgeschichten" ("Success Stories") heading sits in a
+	   fixed 247px box sized for the two-word English version. The single
+	   18-letter German compound word does not fit on one line there, so the
+	   browser's default break-word wrapping splits it mid-syllable into
+	   "Erfolgsgesc" / "hichten". Switching to language-aware hyphenation
+	   (the page already declares lang="de") breaks it cleanly at a syllable
+	   boundary instead: "Erfolgsge-" / "schichten". framer-bd46t4 is this
+	   heading's unique wrapper, so the rule only affects this one element. */
+	.framer-bd46t4 h2 {
+		hyphens: auto !important;
+		-webkit-hyphens: auto !important;
+		overflow-wrap: normal !important;
+		word-break: normal !important;
 	}
 
 	/* 2. Team Section Logo background replacement */
@@ -248,38 +356,362 @@
 		background-position: center !important;
 	}
 
-	/* 3. Force Menu Overlay Text and Links to be White */
-	.framer-xbsob7,
-	.framer-xbsob7 *,
-	.framer-1w3jqcb,
-	.framer-1w3jqcb *,
-	.framer-1oywgs7,
-	.framer-1oywgs7 * {
+	/* On the About/Contact header variant the nav row holds a third, empty
+	   native locale-picker slot alongside the logo and burger menu. With
+	   justify-content: space-between that empty slot pushes the burger/MENU
+	   group into the middle of the header instead of flush right like every
+	   other page. Collapsing it out of the flex flow restores the same
+	   logo-left, controls-right layout used elsewhere. */
+	header .framer-13gbrwu-container {
+		display: none !important;
+	}
+
+	/* 3. Force Nav Links and Contact Items inside drawer to be White */
+	html body .framer-lhs01 .framer-1w3jqcb,
+	html body .framer-lhs01 .framer-1w3jqcb *,
+	html body .framer-lhs01 .framer-1oywgs7,
+	html body .framer-lhs01 .framer-1oywgs7 *,
+	html body .framer-lhs01 .framer-styles-preset-10ygvy8,
+	html body .framer-lhs01 .framer-styles-preset-10ygvy8 *,
+	html body .framer-lhs01 .framer-styles-preset-1nr60og,
+	html body .framer-lhs01 .framer-styles-preset-1nr60og *,
+	html body .framer-lhs01 [data-styles-preset="pFXRpm75X"],
+	html body .framer-lhs01 [data-styles-preset="pFXRpm75X"] *,
+	html body .framer-lhs01 [data-styles-preset="Z43DfkPk9"],
+	html body .framer-lhs01 [data-styles-preset="Z43DfkPk9"] * {
 		color: #ffffff !important;
 		--framer-text-color: #ffffff !important;
+		--framer-link-text-color: #ffffff !important;
+		--framer-link-hover-text-color: #ffffff !important;
+		--framer-link-current-text-color: #ffffff !important;
 		--extracted-r6o4lv: #ffffff !important;
 		-webkit-text-fill-color: #ffffff !important;
+		text-decoration: none !important;
+	}
+
+	/* 4. Force Menu Word, Burger Icon lines, and Language Dropdown Theme Colors */
+	/* Burger Menu Lines */
+	html body .framer-1v2q1i2,
+	html body .framer-6vcmxr {
+		background-color: #000000 !important;
+	}
+
+	/* MENU Word */
+	html body .framer-1665p36,
+	html body .framer-1665p36 *,
+	html body [data-framer-name="MENU"],
+	html body [data-framer-name="MENU"] * {
+		color: #000000 !important;
+		--framer-text-color: #000000 !important;
+		--extracted-r6o4lv: #000000 !important;
+		-webkit-text-fill-color: #000000 !important;
+	}
+
+	/* Language Dropdown - rounded border, no sharp outline */
+	html body .framer-1pl4r2c,
+	html body .framer-1pl4r2c .input {
+		border-radius: 20px !important;
+		outline: none !important;
+		box-shadow: none !important;
+	}
+	html body .framer-1pl4r2c select {
+		outline: none !important;
+		box-shadow: none !important;
+		-webkit-appearance: none !important;
+		border: none !important;
+	}
+	html body .framer-1pl4r2c .input,
+	html body .framer-1pl4r2c .input *,
+	html body .framer-1pl4r2c select,
+	html body .framer-1pl4r2c option,
+	html body .framer-1pl4r2c .title,
+	html body .framer-1pl4r2c .caret,
+	html body .framer-1pl4r2c .caret * {
+		color: #000000 !important;
+		--framer-color: #000000 !important;
+		--framer-text-color: #000000 !important;
+		--extracted-r6o4lv: #000000 !important;
+		-webkit-text-fill-color: #000000 !important;
+		border-color: #000000 !important;
+	}
+	html body .framer-1pl4r2c .input svg,
+	html body .framer-1pl4r2c .input path {
+		fill: #000000 !important;
+		stroke: #000000 !important;
+	}
+
+	/* Services hero "Learn more" button: drop the dark pill-shaped border —
+	   it clashes with the button's purple fill and overly rounded corners. */
+	[data-framer-name="Header button one"]::after {
+		border: none !important;
 	}
 	</style>
 	<script id="cl-global-header-logo-script">
 	(function() {
-		function updateLogos() {
-			// Header Logo
-			var headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], header img, .framer-1ed0056 img, .framer-joevt5 img');
-			headerImgs.forEach(function(img) {
-				img.style.display = 'none';
-				if (img.getAttribute('src') !== '/assets/images/logo.png') {
-					img.setAttribute('src', '/assets/images/logo.png');
-					img.removeAttribute('srcset');
+		// ── Adaptive header theme ─────────────────────────────────────────────────
+		// Samples the computed background color of large elements in the top portion
+		// of the viewport and converts to perceived brightness (ITU-R BT.601 luma).
+		// Returns 'dark' | 'light'.
+		function analyzePageBackground() {
+			// Fast path: known background themes by URL.
+			// Services hero used to be a dark photo; it's now the light abstract
+			// image (cl-services-hero-light-theme), so its header controls
+			// (logo, language switch, MENU, burger) should read as light-theme too.
+			var path = window.location.pathname;
+			if (path.indexOf('/services') !== -1) return 'light';
+
+			// General approach: sample large viewport-spanning elements in the header zone
+			try {
+				var candidates = document.querySelectorAll('div, section, main, article');
+				var checked = 0;
+				for (var i = 0; i < candidates.length && checked < 40; i++) {
+					var el = candidates[i];
+					var r = el.getBoundingClientRect();
+					// Must be tall + wide + inside the header zone
+					if (r.top < 200 && r.bottom > 60 &&
+						r.width > window.innerWidth * 0.5 &&
+						r.height > 80) {
+						checked++;
+						var bg = window.getComputedStyle(el).backgroundColor;
+						if (!bg || bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') continue;
+						var m = bg.match(/d+/g);
+						if (m && m.length >= 3) {
+							// Perceived brightness (BT.601)
+							var lum = (0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2]) / 255;
+							if (lum < 0.35) return 'dark';
+							if (lum > 0.65) return 'light';
+						}
+					}
+				}
+			} catch(e) {}
+
+			return 'light'; // default: assume light/white background
+		}
+
+		function getTheme() {
+			var pageBg = analyzePageBackground(); // 'dark' | 'light'
+			var isDark = pageBg === 'dark';
+			return {
+				isServices: window.location.pathname.indexOf('/services') !== -1,
+				isDark: isDark,
+				logoUrl: isDark ? '/assets/images/logo-team.png' : '/assets/images/logo.png',
+				controlColor: isDark ? '#ffffff' : '#000000',
+				controlBorderColor: isDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.2)'
+			};
+		}
+
+		function updateStyleTag(theme) {
+			var styleEl = document.getElementById('cl-global-header-logo-style');
+			if (!styleEl) return;
+			var currentThemeMode = styleEl.getAttribute('data-theme-mode');
+			var expectedMode = theme.isDark ? 'dark' : 'light';
+			if (currentThemeMode === expectedMode) return;
+
+			styleEl.setAttribute('data-theme-mode', expectedMode);
+			styleEl.innerHTML = `
+	/* Hide original responsive CDN logo images to prevent srcset override and flickers */
+	img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
+	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
+	img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
+	header img,
+	.framer-1ed0056 img,
+	.framer-joevt5 img {
+		display: none !important;
+		opacity: 0 !important;
+	}
+
+	/* Enlarge the header logo container. Some pages (About, Contact) render a
+	   different responsive header variant whose logo carries the class
+	   framer-ffav11 instead of framer-joevt5, so match it by its stable
+	   data-framer-name too -- scoped to header to avoid the team-section logo. */
+	.framer-joevt5,
+	header [data-framer-name="Main Black Background Logo"] {
+		width: 155px !important;
+		height: 40px !important;
+	}
+
+	/* 1. Header Logo & Description Section Logo background replacement */
+	.framer-joevt5,
+	.framer-joevt5 [data-framer-background-image-wrapper="true"],
+	header [data-framer-name="Main Black Background Logo"],
+	header [data-framer-name="Main Black Background Logo"] [data-framer-background-image-wrapper="true"] {
+		background-image: url('${theme.logoUrl}') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
+		background-position: left center !important;
+	}
+
+	.framer-1otr4zy,
+	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+		background-image: url('/assets/images/logo.png') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
+		background-position: center !important;
+	}
+
+	/* The home page "Erfolgsgeschichten" ("Success Stories") heading sits in a
+	   fixed 247px box sized for the two-word English version. The single
+	   18-letter German compound word does not fit on one line there, so the
+	   browser's default break-word wrapping splits it mid-syllable into
+	   "Erfolgsgesc" / "hichten". Switching to language-aware hyphenation
+	   (the page already declares lang="de") breaks it cleanly at a syllable
+	   boundary instead: "Erfolgsge-" / "schichten". framer-bd46t4 is this
+	   heading's unique wrapper, so the rule only affects this one element. */
+	.framer-bd46t4 h2 {
+		hyphens: auto !important;
+		-webkit-hyphens: auto !important;
+		overflow-wrap: normal !important;
+		word-break: normal !important;
+	}
+
+	/* 2. Team Section Logo background replacement */
+	.framer-1xnime3,
+	.framer-1xnime3 [data-framer-background-image-wrapper="true"],
+	.framer-2ufe3c-container,
+	.framer-2ufe3c-container [data-framer-background-image-wrapper="true"] {
+		background-image: url('/assets/images/logo-team.png') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
+		background-position: center !important;
+	}
+
+	/* On the About/Contact header variant the nav row holds a third, empty
+	   native locale-picker slot alongside the logo and burger menu. With
+	   justify-content: space-between that empty slot pushes the burger/MENU
+	   group into the middle of the header instead of flush right like every
+	   other page. Collapsing it out of the flex flow restores the same
+	   logo-left, controls-right layout used elsewhere. */
+	header .framer-13gbrwu-container {
+		display: none !important;
+	}
+
+	/* 3. Force Nav Links and Contact Items inside drawer to be White */
+	html body .framer-lhs01 .framer-1w3jqcb,
+	html body .framer-lhs01 .framer-1w3jqcb *,
+	html body .framer-lhs01 .framer-1oywgs7,
+	html body .framer-lhs01 .framer-1oywgs7 *,
+	html body .framer-lhs01 .framer-styles-preset-10ygvy8,
+	html body .framer-lhs01 .framer-styles-preset-10ygvy8 *,
+	html body .framer-lhs01 .framer-styles-preset-1nr60og,
+	html body .framer-lhs01 .framer-styles-preset-1nr60og *,
+	html body .framer-lhs01 [data-styles-preset="pFXRpm75X"],
+	html body .framer-lhs01 [data-styles-preset="pFXRpm75X"] *,
+	html body .framer-lhs01 [data-styles-preset="Z43DfkPk9"],
+	html body .framer-lhs01 [data-styles-preset="Z43DfkPk9"] * {
+		color: #ffffff !important;
+		--framer-text-color: #ffffff !important;
+		--framer-link-text-color: #ffffff !important;
+		--framer-link-hover-text-color: #ffffff !important;
+		--framer-link-current-text-color: #ffffff !important;
+		--extracted-r6o4lv: #ffffff !important;
+		-webkit-text-fill-color: #ffffff !important;
+		text-decoration: none !important;
+	}
+
+	/* 4. Force Menu Word, Burger Icon lines, and Language Dropdown Theme Colors */
+	/* Burger Menu Lines */
+	html body .framer-1v2q1i2,
+	html body .framer-6vcmxr {
+		background-color: ${theme.controlColor} !important;
+	}
+
+	/* MENU Word */
+	html body .framer-1665p36,
+	html body .framer-1665p36 *,
+	html body [data-framer-name="MENU"],
+	html body [data-framer-name="MENU"] * {
+		color: ${theme.controlColor} !important;
+		--framer-text-color: ${theme.controlColor} !important;
+		--extracted-r6o4lv: ${theme.controlColor} !important;
+		-webkit-text-fill-color: ${theme.controlColor} !important;
+	}
+
+	/* Language Dropdown - rounded border, no sharp outline */
+	html body .framer-1pl4r2c,
+	html body .framer-1pl4r2c .input {
+		border-radius: 20px !important;
+		outline: none !important;
+		box-shadow: none !important;
+	}
+	html body .framer-1pl4r2c select {
+		outline: none !important;
+		box-shadow: none !important;
+		-webkit-appearance: none !important;
+		border: none !important;
+	}
+	html body .framer-1pl4r2c .input,
+	html body .framer-1pl4r2c .input *,
+	html body .framer-1pl4r2c select,
+	html body .framer-1pl4r2c option,
+	html body .framer-1pl4r2c .title,
+	html body .framer-1pl4r2c .caret,
+	html body .framer-1pl4r2c .caret * {
+		color: ${theme.controlColor} !important;
+		--framer-color: ${theme.controlColor} !important;
+		--framer-text-color: ${theme.controlColor} !important;
+		--extracted-r6o4lv: ${theme.controlColor} !important;
+		-webkit-text-fill-color: ${theme.controlColor} !important;
+		border-color: ${theme.controlColor} !important;
+	}
+	html body .framer-1pl4r2c .input svg,
+	html body .framer-1pl4r2c .input path {
+		fill: ${theme.controlColor} !important;
+		stroke: ${theme.controlColor} !important;
+	}
+
+	/* Services hero "Learn more" button: drop the dark pill-shaped border —
+	   it clashes with the button's purple fill and overly rounded corners. */
+	[data-framer-name="Header button one"]::after {
+		border: none !important;
+	}
+			`;
+		}
+
+		function updateLogos(theme) {
+			// Find all header logo images
+			var logoImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"]');
+			logoImgs.forEach(function(img) {
+				// Check if this image is a header logo (not description logo)
+				var isDescOrTeam = img.closest('.framer-1otr4zy, .framer-1xnime3, .framer-2ufe3c-container, [data-framer-name="Main White Background Logo"], [data-framer-name="Main Black Background Logo"]');
+				if (!isDescOrTeam) {
+					// Hide the original img element
+					img.style.setProperty('display', 'none', 'important');
+					img.style.setProperty('opacity', '0', 'important');
+					if (img.getAttribute('src') !== theme.logoUrl) {
+						img.setAttribute('src', theme.logoUrl);
+						img.removeAttribute('srcset');
+					}
+					
+					// Apply background replacement and sizing to parent wrappers up to <a> tag
+					var p = img.parentElement;
+					var depth = 0;
+					while (p && p.tagName !== 'HEADER' && p.tagName !== 'BODY' && depth < 5) {
+						p.style.setProperty('background-image', "url('" + theme.logoUrl + "')", 'important');
+						p.style.setProperty('background-size', 'contain', 'important');
+						p.style.setProperty('background-repeat', 'no-repeat', 'important');
+						p.style.setProperty('background-position', 'left center', 'important');
+						p.style.setProperty('width', '155px', 'important');
+						p.style.setProperty('height', '40px', 'important');
+						if (p.tagName === 'A') {
+							break;
+						}
+						p = p.parentElement;
+						depth++;
+					}
 				}
 			});
 
 			// Description Section Logo
 			var descImgs = document.querySelectorAll('img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
 			descImgs.forEach(function(img) {
-				img.style.display = 'none';
-				if (img.getAttribute('src') !== '/assets/images/logo.png') {
-					img.setAttribute('src', '/assets/images/logo.png');
+				img.style.display = 'block';
+				// The "10:45" phone-mockup notification card (services page) has a
+				// dark purple background — the dark "White Background" logo variant
+				// is invisible there, so swap in the white logo variant instead.
+				var inPhoneMockup = img.closest('[data-framer-name="Logo text"]');
+				var targetSrc = inPhoneMockup ? '/assets/images/logo-team.png' : '/assets/images/logo.png';
+				if (img.getAttribute('src') !== targetSrc) {
+					img.setAttribute('src', targetSrc);
 					img.removeAttribute('srcset');
 				}
 			});
@@ -287,22 +719,299 @@
 			// Team Section Logo
 			var teamImgs = document.querySelectorAll('img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"], .framer-1xnime3 img, .framer-2ufe3c-container img, [data-framer-name="Logo desktop"] img, [data-framer-name="Main Black Background Logo"] img');
 			teamImgs.forEach(function(img) {
-				img.style.display = 'none';
+				img.style.display = 'block';
 				if (img.getAttribute('src') !== '/assets/images/logo-team.png') {
 					img.setAttribute('src', '/assets/images/logo-team.png');
 					img.removeAttribute('srcset');
 				}
 			});
 		}
-		updateLogos();
-		var logoInterval = setInterval(updateLogos, 250);
+
+		function updateBlackControls(theme) {
+			// 1. Burger Lines (Dynamic & Selector based)
+			var burgerLines = Array.prototype.slice.call(document.querySelectorAll(
+				'.framer-1v2q1i2, .framer-6vcmxr, [data-framer-name="Burger"] div, [data-framer-name="Toggle"] div, [data-framer-name="Menu Button"] div'
+			));
+			
+			// Find MENU word and look for nearby horizontal lines
+			var menuWord = null;
+			var allTexts = document.querySelectorAll('div, span, p');
+			for (var i = 0; i < allTexts.length; i++) {
+				var txt = allTexts[i].textContent ? allTexts[i].textContent.trim().toUpperCase() : '';
+				if (txt === 'MENU' || txt === 'MENÜ') {
+					menuWord = allTexts[i];
+					break;
+				}
+			}
+			if (menuWord) {
+				var parent = menuWord.parentElement;
+				for (var depth = 0; depth < 3 && parent; depth++) {
+					var divs = parent.querySelectorAll('div, span');
+					divs.forEach(function(div) {
+						var w = div.offsetWidth || (div.getBoundingClientRect && div.getBoundingClientRect().width);
+						var h = div.offsetHeight || (div.getBoundingClientRect && div.getBoundingClientRect().height);
+						if (w >= 10 && w <= 45 && h >= 1 && h <= 4) {
+							if (burgerLines.indexOf(div) === -1) {
+								burgerLines.push(div);
+							}
+						}
+					});
+					parent = parent.parentElement;
+				}
+			}
+			
+			burgerLines.forEach(function(el) {
+				el.style.setProperty('background-color', theme.controlColor, 'important');
+				if (el.tagName === 'svg' || el.tagName === 'path' || el.tagName === 'line' || el.tagName === 'rect') {
+					el.style.setProperty('fill', theme.controlColor, 'important');
+					el.style.setProperty('stroke', theme.controlColor, 'important');
+				}
+			});
+			
+			// 2. MENU Word (Dynamic & Selector based)
+			var menuWords = Array.prototype.slice.call(document.querySelectorAll(
+				'.framer-1665p36, .framer-1665p36 *, [data-framer-name="MENU"], [data-framer-name="MENU"] *'
+			));
+			allTexts.forEach(function(el) {
+				var txt = el.textContent ? el.textContent.trim().toUpperCase() : '';
+				if (txt === 'MENU' || txt === 'MENÜ') {
+					if (menuWords.indexOf(el) === -1) menuWords.push(el);
+					var children = el.querySelectorAll('*');
+					children.forEach(function(child) {
+						if (menuWords.indexOf(child) === -1) menuWords.push(child);
+					});
+				}
+			});
+			menuWords.forEach(function(el) {
+				el.style.setProperty('color', theme.controlColor, 'important');
+				el.style.setProperty('-webkit-text-fill-color', theme.controlColor, 'important');
+				el.style.setProperty('--framer-text-color', theme.controlColor, 'important');
+				el.style.setProperty('--extracted-r6o4lv', theme.controlColor, 'important');
+			});
+
+			// 3. Language Selector Dropdown (Dynamic select styling & text-based)
+			var selects = document.querySelectorAll('select');
+			selects.forEach(function(sel) {
+				sel.style.setProperty('color', theme.controlColor, 'important');
+				sel.style.setProperty('background-color', 'transparent', 'important');
+				sel.style.setProperty('border-color', theme.controlColor, 'important');
+				sel.style.setProperty('--framer-color', theme.controlColor, 'important');
+				sel.style.setProperty('--framer-text-color', theme.controlColor, 'important');
+				sel.style.setProperty('--extracted-r6o4lv', theme.controlColor, 'important');
+				sel.style.setProperty('outline', 'none', 'important');
+				sel.style.setProperty('box-shadow', 'none', 'important');
+				
+				var parent = sel.parentElement;
+				if (parent) {
+					parent.style.setProperty('color', theme.controlColor, 'important');
+					parent.style.setProperty('border-color', theme.controlColor, 'important');
+					parent.style.setProperty('--framer-color', theme.controlColor, 'important');
+					parent.style.setProperty('--framer-text-color', theme.controlColor, 'important');
+					parent.style.setProperty('--extracted-r6o4lv', theme.controlColor, 'important');
+					parent.style.setProperty('border', '1px solid ' + theme.controlBorderColor, 'important');
+					parent.style.setProperty('border-radius', '20px', 'important');
+					parent.style.setProperty('outline', 'none', 'important');
+					parent.style.setProperty('box-shadow', 'none', 'important');
+					
+					var svgs = parent.querySelectorAll('svg, path');
+					svgs.forEach(function(svg) {
+						svg.style.setProperty('color', theme.controlColor, 'important');
+						svg.style.setProperty('fill', theme.controlColor, 'important');
+						svg.style.setProperty('stroke', theme.controlColor, 'important');
+					});
+
+					var grandparent = parent.parentElement;
+					if (grandparent) {
+						grandparent.style.setProperty('color', theme.controlColor, 'important');
+						grandparent.style.setProperty('border-color', theme.controlColor, 'important');
+						grandparent.style.setProperty('--framer-color', theme.controlColor, 'important');
+						grandparent.style.setProperty('--framer-text-color', theme.controlColor, 'important');
+						grandparent.style.setProperty('--extracted-r6o4lv', theme.controlColor, 'important');
+						
+						var gpSvgs = grandparent.querySelectorAll('svg, path');
+						gpSvgs.forEach(function(svg) {
+							svg.style.setProperty('color', theme.controlColor, 'important');
+							svg.style.setProperty('fill', theme.controlColor, 'important');
+							svg.style.setProperty('stroke', theme.controlColor, 'important');
+						});
+					}
+				}
+			});
+
+			allTexts.forEach(function(el) {
+				var text = el.textContent ? el.textContent.trim() : '';
+				if (text === 'English' || text === 'Deutsch' || text === 'EN' || text === 'DE') {
+					el.style.setProperty('color', theme.controlColor, 'important');
+					el.style.setProperty('-webkit-text-fill-color', theme.controlColor, 'important');
+					el.style.setProperty('--framer-color', theme.controlColor, 'important');
+					el.style.setProperty('--framer-text-color', theme.controlColor, 'important');
+					el.style.setProperty('--extracted-r6o4lv', theme.controlColor, 'important');
+					
+					var svgs = el.querySelectorAll('svg, path');
+					svgs.forEach(function(svg) {
+						svg.style.setProperty('color', theme.controlColor, 'important');
+						svg.style.setProperty('fill', theme.controlColor, 'important');
+						svg.style.setProperty('stroke', theme.controlColor, 'important');
+					});
+				}
+			});
+
+			// Style all SVGs in the header/nav to match theme.controlColor
+			var headerSvgs = document.querySelectorAll('header svg, nav svg, [data-framer-name="Header"] svg, [data-framer-name="Navigation"] svg');
+			headerSvgs.forEach(function(svg) {
+				svg.style.setProperty('color', theme.controlColor, 'important');
+				svg.style.setProperty('fill', theme.controlColor, 'important');
+				svg.style.setProperty('stroke', theme.controlColor, 'important');
+				var paths = svg.querySelectorAll('path, rect, line, circle');
+				paths.forEach(function(p) {
+					p.style.setProperty('color', theme.controlColor, 'important');
+					p.style.setProperty('fill', theme.controlColor, 'important');
+					p.style.setProperty('stroke', theme.controlColor, 'important');
+				});
+			});
+		}
+
+		// The exported logo link carries a nested "#mainhero" anchor href
+		// (e.g. "./#mainhero") that Framer's own click handler reads directly,
+		// landing on a hash URL that re-triggers hero-specific rendering instead
+		// of a clean homepage load. Strip the hash so every logo click — on any
+		// page, including the homepage itself — resolves to a plain "/".
+		function fixLogoLinks() {
+			var nestedLinks = document.querySelectorAll('[data-nested-link="true"][href*="#mainhero"], a[href*="#mainhero"]');
+			nestedLinks.forEach(function(el) {
+				var href = el.getAttribute('href');
+				var clean = href.split('#')[0];
+				if (clean === '' || clean === './') clean = '/';
+				if (href !== clean) {
+					el.setAttribute('href', clean);
+				}
+			});
+		}
+
+		// Framer's runtime computes its own contrast color for the arrow icon
+		// inside the services hero "Learn more" button and bakes it into the
+		// inline style as important black, overriding the white the design
+		// intends. An important inline declaration can only be beaten by
+		// another inline declaration, so re-apply white on top of it here.
+		function fixLearnMoreIcon() {
+			var btn = document.querySelector('[data-framer-name="Header button one"]');
+			if (!btn) return;
+			var icons = btn.querySelectorAll('svg, path, line, polyline, circle, rect');
+			icons.forEach(function(el) {
+				el.style.setProperty('color', '#ffffff', 'important');
+				el.style.setProperty('fill', '#ffffff', 'important');
+				el.style.setProperty('stroke', '#ffffff', 'important');
+			});
+		}
+
+		function updateAll() {
+			// This script runs in <head>, before <body> is parsed — the very
+			// first synchronous call landed here with document.body still null,
+			// throwing and aborting the rest of the IIFE (interval, observer,
+			// click interceptor never registered). Bail until body exists.
+			if (!document.body) return;
+			var theme = getTheme();
+			updateStyleTag(theme);
+			updateLogos(theme);
+			updateBlackControls(theme);
+			fixLogoLinks();
+			fixLearnMoreIcon();
+		}
+
+		updateAll();
+		var logoInterval = setInterval(updateAll, 250);
 		setTimeout(function() { clearInterval(logoInterval); }, 15000);
 		
-		var observer = new MutationObserver(updateLogos);
-		observer.observe(document.body, { childList: true, subtree: true });
+		var observer = new MutationObserver(updateAll);
+		if (document.body) {
+			observer.observe(document.body, { childList: true, subtree: true });
+		} else {
+			document.addEventListener('DOMContentLoaded', function() {
+				observer.observe(document.body, { childList: true, subtree: true });
+			});
+		}
+
+		// Listen for SPA history changes
+		var originalPushState = history.pushState;
+		var originalReplaceState = history.replaceState;
+		history.pushState = function() {
+			originalPushState.apply(this, arguments);
+			updateAll();
+		};
+		history.replaceState = function() {
+			originalReplaceState.apply(this, arguments);
+			updateAll();
+		};
+		window.addEventListener('popstate', updateAll);
+
+		// Re-apply styles after CSS transitions/animations complete (e.g. menu drawer open)
+		document.addEventListener('transitionend', function() { setTimeout(updateAll, 20); });
+		document.addEventListener('animationend', function() { setTimeout(updateAll, 20); });
+
+		// Intercept ALL clicks to force full-page redirects on local page routes
+		window.addEventListener('click', function(e) {
+			var target = e.target;
+			var link = null;
+			while (target && target !== document.body) {
+				if (target.tagName === 'A') {
+					link = target;
+					break;
+				}
+				target = target.parentElement;
+			}
+			if (link) {
+				var href = link.getAttribute('href');
+				if (href) {
+					var cleanHref = href.trim();
+					if (cleanHref.startsWith('/') || cleanHref.startsWith('./') || cleanHref.indexOf(window.location.host) !== -1) {
+						if (!cleanHref.startsWith('tel:') && !cleanHref.startsWith('mailto:') && !cleanHref.startsWith('#')) {
+							// Exclude absolute external URLs unless they match window.location.host
+							var isExternal = cleanHref.indexOf('://') !== -1 && cleanHref.indexOf(window.location.host) === -1;
+							if (!isExternal) {
+								var urlPath = cleanHref.split('?')[0].split('#')[0];
+								if (urlPath === './') urlPath = '/';
+								if (urlPath.startsWith('./')) urlPath = '/' + urlPath.substring(2);
+								
+								// Handle anchors on the same page
+								var hasHash = cleanHref.indexOf('#') !== -1;
+								var hashValue = hasHash ? cleanHref.substring(cleanHref.indexOf('#')) : '';
+								
+								var targetUrl = null;
+								if (urlPath === '/' || urlPath === '') {
+									targetUrl = '/';
+								} else if (urlPath.indexOf('services') !== -1) {
+									targetUrl = '/services';
+								} else if (urlPath.indexOf('about') !== -1) {
+									targetUrl = '/about';
+								} else if (urlPath.indexOf('contact') !== -1) {
+									targetUrl = '/contact';
+								} else if (urlPath.indexOf('terms') !== -1) {
+									targetUrl = '/terms';
+								}
+
+								if (targetUrl) {
+									var currentPath = window.location.pathname;
+									if (currentPath === './' || currentPath === '') currentPath = '/';
+									var normalizedTarget = targetUrl;
+									
+									// If it's a hash link on the current page, let the default behavior (scroll) happen
+									if (hasHash && currentPath === normalizedTarget) {
+										return;
+									}
+									
+									e.preventDefault();
+									e.stopPropagation();
+									window.location.href = targetUrl + hashValue;
+								}
+							}
+						}
+					}
+				}
+			}
+		}, true); // Use capture phase to intercept before React router handlers
 	})();
 	</script>
-
+	
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="3d97e98a64dbb3dc6e8a6f767c47dcf2f4ba2135718055f806654ca3ba696044" data-no-nt></script>
@@ -310,7 +1019,7 @@
     
     <!-- End of bodyStart -->
 	
-	<div id="main" data-framer-hydrate-v2="{&quot;routeId&quot;:&quot;J6bt4BI9I&quot;,&quot;localeId&quot;:&quot;default&quot;,&quot;breakpoints&quot;:[{&quot;hash&quot;:&quot;1dafmry&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 1200px)&quot;},{&quot;hash&quot;:&quot;1ettma&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 810px) and (max-width: 1199.98px)&quot;},{&quot;hash&quot;:&quot;8x73lm&quot;,&quot;mediaQuery&quot;:&quot;(max-width: 809.98px)&quot;},{&quot;hash&quot;:&quot;17ruhlu&quot;,&quot;mediaQuery&quot;:&quot;(max-width: 809.98px)&quot;},{&quot;hash&quot;:&quot;1dc2pdl&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 810px) and (max-width: 1199.98px)&quot;},{&quot;hash&quot;:&quot;193bvef&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 1200px)&quot;}]}" data-framer-ssr-released-at="2026-05-19T15:13:01.659Z" data-framer-page-optimized-at="2026-06-06T11:55:55.956Z" data-framer-generated-page><!--$--><style data-framer-html-style>:root body { background: var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12)); }</style><!--$--><div class="framer-1hgvV framer-193bvef" data-layout-template="true" data-selection="true" style="min-height:100vh;width:auto"><style data-framer-html-style>html body { background: rgb(255, 255, 255); }</style><div data-framer-root class="framer-T92hO framer-ew0vz framer-RhHCy framer-1dafmry" style="min-height:100vh;width:auto;display:contents"><div class="ssr-variant hidden-8x73lm"><div class="framer-1l2qovg-container" data-framer-appear-id="1l2qovg" style="opacity:0.001;transform:translateY(30px)"><header class="framer-lhs01 framer-vBwZu framer-185cz0f framer-v-m5ha19" data-framer-name="Desktop closed" style="width:100%"><div class="framer-xbsob7" data-framer-name="Menu"><nav class="framer-1pl4r2c" data-framer-name="Top"><!--$--><a class="framer-spenxr framer-1ae4tr8" data-framer-name="Link" href="./about"></a><!--/$--><!--$--><a class="framer-10uxvup framer-1ae4tr8" data-framer-name="Link" href="./services"></a><!--/$--><!--$--><a class="framer-whrowo framer-1ae4tr8" data-framer-name="Link" href="./contact"></a><!--/$--><div class="framer-13gbrwu-container"><!--$--><div class="framer-locale-picker" style="width:100%"><label for=":Ramdbqraqop:">Select Language</label><select id=":Ramdbqraqop:" autocomplete="off"><option value="default" selected>German</option></select><div class="input" style="font-family:&quot;Inter&quot;, &quot;Inter Placeholder&quot;, sans-serif;font-size:14px;font-style:normal;font-weight:400;letter-spacing:0em;line-height:1.5em;--framer-background-color:rgb(255, 255, 255);--framer-color:rgb(0, 0, 0);padding:10px;border-radius:10px;border:none;--framer-focus-outline:1px solid rgb(0, 153, 255);--framer-focus-outline-offset:0px;gap:5px"><div class="title">German</div><div class="caret"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="12" height="12"><path d="M 2 4.5 L 6 8.5 L 10 4.5" fill="none" stroke="rgb(153, 153, 153)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><!--/$--></div><div class="framer-1xpg40s" data-framer-name="Header / Burger menu" data-highlight="true" tabindex="0"><div class="framer-7ck5ee-container"><div class="framer-KPiP0 framer-5wdnmg framer-v-5wdnmg" data-framer-name="Closed"><div class="framer-1v2q1i2" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div><div class="framer-6vcmxr" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div></div></div><div class="framer-1665p36" data-framer-name="MENU" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-GcgGR2ESN-O1fMzCErz);--framer-paragraph-spacing:0px;--variable-reference-GcgGR2ESN-O1fMzCErz:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text" style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:50px;--framer-letter-spacing:-0.04em;--framer-line-height:0.85em;--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-GcgGR2ESN-O1fMzCErz))">MENU</p></div></div><!--$--><a class="framer-1qm1q2b framer-1ae4tr8" data-framer-name="Main Black Background Logo" as="a" href="./#mainhero"><div style="position:absolute;border-radius:inherit;corner-shape:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true"><img decoding="async" width="531" height="101" sizes="(min-width: 1200px) 118px, (min-width: 810px) and (max-width: 1199.98px) 118px" srcset="https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?scale-down-to=512&amp;width=531&amp;height=101 512w,https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?width=531&amp;height=101 531w" src="https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?width=531&amp;height=101" alt style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:contain"></div></a><!--/$--></nav><div class="framer-1oywgs7" data-framer-name="Bottom" style="opacity:1"><div class="framer-1ydu5x" data-framer-name="Contact" style="opacity:0"><div class="framer-9ezvvw" data-framer-name="(510) 895-6500" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:0;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItTWVkaXVt;--framer-font-size:18px;--framer-font-weight:500;--framer-letter-spacing:-0.04em;--framer-line-height:140%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="tel:+49 172 9213015" target="_blank" rel="noopener">+49 172 9213015</a><!--/$--></p></div><div class="framer-12hhivf" data-framer-name="hello@lyniqstudio.com" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:0;transform:none"><p class="framer-text" style="--font-selector:SW50ZXItU2VtaUJvbGQ=;--framer-font-family:&quot;Inter&quot;, &quot;Inter Placeholder&quot;, sans-serif;--framer-font-size:46px;--framer-font-weight:600;--framer-letter-spacing:-0.07em;--framer-line-height:110%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="mailto:hello@lyniqstudio.com" target="_blank" rel="noopener">info@competencelabs.com</a><!--/$--></p></div></div><nav class="framer-1w3jqcb" data-framer-name="Nav" style="opacity:0"><!--$--><div class="framer-egomgl-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1h652bd-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./services" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-15s0tgm-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./about" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1bpq57u-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./contact" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div></a><!--/$--></div><!--/$--></nav></div><div class="framer-akdqg1" data-framer-name="Overlay" style="background:linear-gradient(180deg, var(--token-6d50dcda-1f6c-4d8d-a9cc-5a55ae9f7ec9, rgb(163, 13, 248)) 0%, rgb(0, 0, 0) 100%)"></div></div></header></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1l2qovg-container" data-framer-appear-id="1l2qovg"><header class="framer-lhs01 framer-vBwZu framer-185cz0f framer-v-19vil5u" data-framer-name="Phone closed" style="width:100%"><div class="framer-xbsob7" data-framer-name="Menu"><nav class="framer-1pl4r2c" data-framer-name="Top"><!--$--><a class="framer-yh40en framer-1ae4tr8" data-framer-name="Link" href="./"><div class="framer-1ed0056" data-framer-name="Logo"><!--$--><span as="span" class="framer-joevt5 framer-1ae4tr8" data-framer-name="Main Black Background Logo" href="./#mainhero" data-nested-link="true" role="link" tabindex="0"><div style="position:absolute;border-radius:inherit;corner-shape:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true"><img decoding="async" width="2124" height="525" sizes="(max-width: 809.98px) 118px" srcset="https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=512&amp;width=2124&amp;height=525 512w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=1024&amp;width=2124&amp;height=525 1024w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=2048&amp;width=2124&amp;height=525 2048w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?width=2124&amp;height=525 2124w" src="https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?width=2124&amp;height=525" alt style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:contain"></div></span><!--/$--></div></a><!--/$--><div class="framer-1xpg40s" data-framer-name="Header / Burger menu" data-highlight="true" tabindex="0"><div class="framer-7ck5ee-container"><div class="framer-KPiP0 framer-5wdnmg framer-v-5wdnmg" data-framer-name="Closed"><div class="framer-1v2q1i2" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div><div class="framer-6vcmxr" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div></div></div><div class="framer-1665p36" data-framer-name="MENU" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-GcgGR2ESN-O1fMzCErz);--framer-paragraph-spacing:0px;--variable-reference-GcgGR2ESN-O1fMzCErz:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text" style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:38px;--framer-letter-spacing:-0.04em;--framer-line-height:0.85em;--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-GcgGR2ESN-O1fMzCErz))">MENU</p></div></div></nav><div class="framer-1oywgs7" data-framer-name="Bottom" style="opacity:0"><div class="framer-1ydu5x" data-framer-name="Contact" style="opacity:1"><div class="framer-9ezvvw" data-framer-name="(510) 895-6500" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:1;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItTWVkaXVt;--framer-font-size:18px;--framer-font-weight:500;--framer-letter-spacing:-0.04em;--framer-line-height:140%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="tel:+49 172 9213015" target="_blank" rel="noopener">+49 172 9213015</a><!--/$--></p></div><div class="framer-12hhivf" data-framer-name="hello@lyniqstudio.com" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:1;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItU2VtaUJvbGQ=;--framer-font-size:26px;--framer-font-weight:600;--framer-letter-spacing:-0.07em;--framer-line-height:110%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="mailto:hello@lyniqstudio.com" target="_blank" rel="noopener">info@competencelabs.com</a><!--/$--></p></div></div><nav class="framer-1w3jqcb" data-framer-name="Nav" style="opacity:1"><!--$--><div class="framer-egomgl-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-8ibbxv framer-146nb98" data-framer-name="Tablet-Phone" data-highlight="true" href="./" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1h652bd-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-8ibbxv framer-146nb98" data-framer-name="Tablet-Phone" data-highlight="true" href="./services" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-15s0tgm-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./about" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1bpq57u-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="./contact" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div></a><!--/$--></div><!--/$--></nav></div><div class="framer-akdqg1" data-framer-name="Overlay" style="background:linear-gradient(180deg, var(--token-6d50dcda-1f6c-4d8d-a9cc-5a55ae9f7ec9, rgb(163, 13, 248)) 0%, rgb(0, 0, 0) 100%)"></div></div></header></div></div><main class="framer-190ov9c" data-framer-name="Main"><div class="framer-1snj22b" data-framer-name="Container"><div class="framer-ygegx" data-framer-name="Text"><div class="ssr-variant hidden-1ettma hidden-8x73lm"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:210px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="ssr-variant hidden-1dafmry hidden-8x73lm"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:190px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:120px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="framer-wm52ho" data-framer-name="text"><div class="framer-wl1mmz" data-framer-component-type="RichTextContainer" style="transform:none"><p class="framer-text framer-styles-preset-5jibgy" data-styles-preset="DPl1XeZ47" style="--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))">Page not found</p></div><div class="framer-our7iv" data-framer-component-type="RichTextContainer" style="transform:none"><p class="framer-text framer-styles-preset-1raml1m" data-styles-preset="hOrfMQMhw" style="--framer-text-alignment:center;--framer-text-color:rgba(12, 12, 12, 0.6)">The page you are looking for could not be found</p></div></div></div><!--$--><div class="ssr-variant hidden-8x73lm"><div class="framer-1vndu3l-container"><button class="framer-KR0up framer-PJOjX framer-az50z5 framer-v-az50z5" data-framer-name="Desktop" data-reset="button"><!--$--><a class="framer-13x93le framer-dbdkto" data-framer-name="Link" href="./" style="background-color:rgba(0, 0, 0, 0);border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px"><div class="framer-1m71lft-container" style="opacity:1;transform:none"><!--$--><div style="display:contents"></div><!--/$--></div><div class="framer-7q3foz" data-framer-name="Let’s talk" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-zvTGbXZx3-ozPjcS5mp);--framer-paragraph-spacing:0px;--variable-reference-zvTGbXZx3-ozPjcS5mp:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text framer-styles-preset-1dmjd5e" data-styles-preset="q35quwzCc" style="--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-zvTGbXZx3-ozPjcS5mp))">Back to Homepage</p></div></a><!--/$--></button></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1vndu3l-container"><button class="framer-KR0up framer-PJOjX framer-az50z5 framer-v-1tzney4" data-framer-name="Phone" data-reset="button"><!--$--><a class="framer-13x93le framer-dbdkto" data-framer-name="Link" href="./" style="background-color:rgba(0, 0, 0, 0);border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px"><div class="framer-1m71lft-container" style="opacity:1;transform:none"><!--$--><div style="display:contents"></div><!--/$--></div><div class="framer-7q3foz" data-framer-name="Let’s talk" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-zvTGbXZx3-ozPjcS5mp);--framer-paragraph-spacing:0px;--variable-reference-zvTGbXZx3-ozPjcS5mp:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text framer-styles-preset-1dmjd5e" data-styles-preset="q35quwzCc" style="--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-zvTGbXZx3-ozPjcS5mp))">Back to Homepage</p></div></a><!--/$--></button></div></div><!--/$--></div></main><div class="framer-15pfyy9-container hidden-8x73lm"><!--$--><div></div><!--/$--></div></div><div id="overlay"></div><div class="framer-1d1rntb"></div></div><!--/$--><div id="template-overlay"></div><!--/$--></div><script>(()=>{function u(){function n(t,e,i){let r=document.createElement("a");r.href=t,r.target=i,r.rel=e,document.body.appendChild(r),r.click(),r.remove()}function o(t){if(this.dataset.hydrated){this.removeEventListener("click",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");if(!e)return;if(/Mac|iPod|iPhone|iPad/u.test(navigator.userAgent)?t.metaKey:t.ctrlKey)return n(e,"","_blank");let r=this.getAttribute("rel")??"",c=this.getAttribute("target")??"";n(e,r,c)}function a(t){if(this.dataset.hydrated){this.removeEventListener("auxclick",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");e&&n(e,"","_blank")}function s(t){if(this.dataset.hydrated){this.removeEventListener("keydown",s);return}if(t.key!=="Enter")return;t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");if(!e)return;let i=this.getAttribute("rel")??"",r=this.getAttribute("target")??"";n(e,i,r)}document.querySelectorAll("[data-nested-link]").forEach(t=>{t instanceof HTMLElement&&(t.addEventListener("click",o),t.addEventListener("auxclick",a),t.addEventListener("keydown",s))})}return u})()()</script><script>(()=>{function P(e,t){if(!e.startsWith("/")||!t.startsWith("/"))throw new Error("from/to paths are expected to be absolute");let[s]=S(e),[l,o]=S(t),n=w(s,l);return n===""&&(n="."),!n.startsWith(".")&&!n.startsWith("/")&&(n="./"+n),n+"/"+o}function S(e){let t=e.lastIndexOf("/");return[e.substring(0,t+1),e.substring(t+1)]}var m=46,g=47,a=(e,t)=>e.charCodeAt(t),b=(e,t)=>e.lastIndexOf(t),h=(e,t,s)=>e.slice(t,s);function w(e,t){if(e===t||(e="/"+A(e),t="/"+A(t),e===t))return"";let s=1,l=e.length,o=l-s,n=1,i=t.length-n,f=o<i?o:i,c=-1,r=0;for(;r<f;r++){let p=a(e,s+r);if(p!==a(t,n+r))break;p===g&&(c=r)}if(r===f)if(i>f){if(a(t,n+r)===g)return h(t,n+r+1);if(r===0)return h(t,n+r)}else o>f&&(a(e,s+r)===g?c=r:r===0&&(c=0));let d="";for(r=s+c+1;r<=l;++r)(r===l||a(e,r)===g)&&(d+=d.length===0?"..":"/..");return`${d}${h(t,n+c)}`}var C=!1,u="/",x=e=>e===g;function A(e){let t="",s=0,l=-1,o=0,n=0;for(let i=0;i<=e.length;++i){if(i<e.length)n=a(e,i);else{if(x(n))break;n=g}if(x(n)){if(!(l===i-1||o===1))if(o===2){if(t.length<2||s!==2||a(t,t.length-1)!==m||a(t,t.length-2)!==m){if(t.length>2){let f=b(t,u);f===-1?(t="",s=0):(t=h(t,0,f),s=t.length-1-b(t,u)),l=i,o=0;continue}else if(t.length!==0){t="",s=0,l=i,o=0;continue}}C&&(t+=t.length>0?`${u}..`:"..",s=2)}else t.length>0?t+=`${u}${h(e,l+1,i)}`:t=h(e,l+1,i),s=i-l-1;l=i,o=0}else n===m&&o!==-1?++o:o=-1}return t}function R(e){if(!e)return"";let t;try{t=new URL(e)}catch{return""}return t.pathname==="/"||window.location.origin!==t.origin?"":t.pathname.endsWith("/")?t.pathname.slice(0,-1):t.pathname}function D(e,t){let l="https://example.com"+R(e)+t,o=document.querySelectorAll("#main a");for(let n of o){let i=n.getAttribute("href");if(!i||i.charCodeAt(0)!==46)continue;let f=new URL(i,l),c=window.location.pathname,r=P(c,f.pathname+f.search+f.hash);n.setAttribute("href",r)}}return D})()("https://fuzzy-system-583141.framer.app", "/404")</script>
+	<div id="main" data-framer-hydrate-v2="{&quot;routeId&quot;:&quot;J6bt4BI9I&quot;,&quot;localeId&quot;:&quot;default&quot;,&quot;breakpoints&quot;:[{&quot;hash&quot;:&quot;1dafmry&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 1200px)&quot;},{&quot;hash&quot;:&quot;1ettma&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 810px) and (max-width: 1199.98px)&quot;},{&quot;hash&quot;:&quot;8x73lm&quot;,&quot;mediaQuery&quot;:&quot;(max-width: 809.98px)&quot;},{&quot;hash&quot;:&quot;17ruhlu&quot;,&quot;mediaQuery&quot;:&quot;(max-width: 809.98px)&quot;},{&quot;hash&quot;:&quot;1dc2pdl&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 810px) and (max-width: 1199.98px)&quot;},{&quot;hash&quot;:&quot;193bvef&quot;,&quot;mediaQuery&quot;:&quot;(min-width: 1200px)&quot;}]}" data-framer-ssr-released-at="2026-05-19T15:13:01.659Z" data-framer-page-optimized-at="2026-06-06T11:55:55.956Z" data-framer-generated-page><!--$--><style data-framer-html-style>:root body { background: var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12)); }</style><!--$--><div class="framer-1hgvV framer-193bvef" data-layout-template="true" data-selection="true" style="min-height:100vh;width:auto"><style data-framer-html-style>html body { background: rgb(255, 255, 255); }</style><div data-framer-root class="framer-T92hO framer-ew0vz framer-RhHCy framer-1dafmry" style="min-height:100vh;width:auto;display:contents"><div class="ssr-variant hidden-8x73lm"><div class="framer-1l2qovg-container" data-framer-appear-id="1l2qovg" style="opacity:0.001;transform:translateY(30px)"><header class="framer-lhs01 framer-vBwZu framer-185cz0f framer-v-m5ha19" data-framer-name="Desktop closed" style="width:100%"><div class="framer-xbsob7" data-framer-name="Menu"><nav class="framer-1pl4r2c" data-framer-name="Top"><!--$--><a class="framer-spenxr framer-1ae4tr8" data-framer-name="Link" href="/about"></a><!--/$--><!--$--><a class="framer-10uxvup framer-1ae4tr8" data-framer-name="Link" href="/services"></a><!--/$--><!--$--><a class="framer-whrowo framer-1ae4tr8" data-framer-name="Link" href="/contact"></a><!--/$--><div class="framer-13gbrwu-container"><!--$--><div class="framer-locale-picker" style="width:100%"><label for=":Ramdbqraqop:">Select Language</label><select id=":Ramdbqraqop:" autocomplete="off"><option value="default" selected>German</option></select><div class="input" style="font-family:&quot;Inter&quot;, &quot;Inter Placeholder&quot;, sans-serif;font-size:14px;font-style:normal;font-weight:400;letter-spacing:0em;line-height:1.5em;--framer-background-color:rgb(255, 255, 255);--framer-color:rgb(0, 0, 0);padding:10px;border-radius:10px;border:none;--framer-focus-outline:1px solid rgb(0, 153, 255);--framer-focus-outline-offset:0px;gap:5px"><div class="title">German</div><div class="caret"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="12" height="12"><path d="M 2 4.5 L 6 8.5 L 10 4.5" fill="none" stroke="rgb(153, 153, 153)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><!--/$--></div><div class="framer-1xpg40s" data-framer-name="Header / Burger menu" data-highlight="true" tabindex="0"><div class="framer-7ck5ee-container"><div class="framer-KPiP0 framer-5wdnmg framer-v-5wdnmg" data-framer-name="Closed"><div class="framer-1v2q1i2" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div><div class="framer-6vcmxr" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div></div></div><div class="framer-1665p36" data-framer-name="MENU" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-GcgGR2ESN-O1fMzCErz);--framer-paragraph-spacing:0px;--variable-reference-GcgGR2ESN-O1fMzCErz:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text" style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:50px;--framer-letter-spacing:-0.04em;--framer-line-height:0.85em;--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-GcgGR2ESN-O1fMzCErz))">MENU</p></div></div><!--$--><a class="framer-1qm1q2b framer-1ae4tr8" data-framer-name="Main Black Background Logo" as="a" href="/#mainhero"><div style="position:absolute;border-radius:inherit;corner-shape:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true"><img decoding="async" width="531" height="101" sizes="(min-width: 1200px) 118px, (min-width: 810px) and (max-width: 1199.98px) 118px" srcset="https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?scale-down-to=512&amp;width=531&amp;height=101 512w,https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?width=531&amp;height=101 531w" src="https://framerusercontent.com/images/PubWQVztlJFvyd49JO2oB7p6EWc.png?width=531&amp;height=101" alt style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:contain"></div></a><!--/$--></nav><div class="framer-1oywgs7" data-framer-name="Bottom" style="opacity:1"><div class="framer-1ydu5x" data-framer-name="Contact" style="opacity:0"><div class="framer-9ezvvw" data-framer-name="(510) 895-6500" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:0;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItTWVkaXVt;--framer-font-size:18px;--framer-font-weight:500;--framer-letter-spacing:-0.04em;--framer-line-height:140%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="tel:+49 172 9213015" target="_blank" rel="noopener">+49 172 9213015</a><!--/$--></p></div><div class="framer-12hhivf" data-framer-name="hello@lyniqstudio.com" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:0;transform:none"><p class="framer-text" style="--font-selector:SW50ZXItU2VtaUJvbGQ=;--framer-font-family:&quot;Inter&quot;, &quot;Inter Placeholder&quot;, sans-serif;--framer-font-size:46px;--framer-font-weight:600;--framer-letter-spacing:-0.07em;--framer-line-height:110%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="mailto:hello@lyniqstudio.com" target="_blank" rel="noopener">info@competencelabs.com</a><!--/$--></p></div></div><nav class="framer-1w3jqcb" data-framer-name="Nav" style="opacity:0"><!--$--><div class="framer-egomgl-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1h652bd-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/services" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-15s0tgm-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/about" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1bpq57u-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/contact" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div></a><!--/$--></div><!--/$--></nav></div><div class="framer-akdqg1" data-framer-name="Overlay" style="background:linear-gradient(180deg, var(--token-6d50dcda-1f6c-4d8d-a9cc-5a55ae9f7ec9, rgb(163, 13, 248)) 0%, rgb(0, 0, 0) 100%)"></div></div></header></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1l2qovg-container" data-framer-appear-id="1l2qovg"><header class="framer-lhs01 framer-vBwZu framer-185cz0f framer-v-19vil5u" data-framer-name="Phone closed" style="width:100%"><div class="framer-xbsob7" data-framer-name="Menu"><nav class="framer-1pl4r2c" data-framer-name="Top"><!--$--><a class="framer-yh40en framer-1ae4tr8" data-framer-name="Link" href="/"><div class="framer-1ed0056" data-framer-name="Logo"><!--$--><span as="span" class="framer-joevt5 framer-1ae4tr8" data-framer-name="Main Black Background Logo" href="/#mainhero" data-nested-link="true" role="link" tabindex="0"><div style="position:absolute;border-radius:inherit;corner-shape:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true"><img decoding="async" width="2124" height="525" sizes="(max-width: 809.98px) 118px" srcset="https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=512&amp;width=2124&amp;height=525 512w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=1024&amp;width=2124&amp;height=525 1024w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?scale-down-to=2048&amp;width=2124&amp;height=525 2048w,https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?width=2124&amp;height=525 2124w" src="https://framerusercontent.com/images/FWNkv69JGijvxHCNNVcTqsdMmFg.png?width=2124&amp;height=525" alt style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:contain"></div></span><!--/$--></div></a><!--/$--><div class="framer-1xpg40s" data-framer-name="Header / Burger menu" data-highlight="true" tabindex="0"><div class="framer-7ck5ee-container"><div class="framer-KPiP0 framer-5wdnmg framer-v-5wdnmg" data-framer-name="Closed"><div class="framer-1v2q1i2" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div><div class="framer-6vcmxr" style="background-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"></div></div></div><div class="framer-1665p36" data-framer-name="MENU" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-GcgGR2ESN-O1fMzCErz);--framer-paragraph-spacing:0px;--variable-reference-GcgGR2ESN-O1fMzCErz:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text" style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:38px;--framer-letter-spacing:-0.04em;--framer-line-height:0.85em;--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-GcgGR2ESN-O1fMzCErz))">MENU</p></div></div></nav><div class="framer-1oywgs7" data-framer-name="Bottom" style="opacity:0"><div class="framer-1ydu5x" data-framer-name="Contact" style="opacity:1"><div class="framer-9ezvvw" data-framer-name="(510) 895-6500" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:1;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItTWVkaXVt;--framer-font-size:18px;--framer-font-weight:500;--framer-letter-spacing:-0.04em;--framer-line-height:140%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="tel:+49 172 9213015" target="_blank" rel="noopener">+49 172 9213015</a><!--/$--></p></div><div class="framer-12hhivf" data-framer-name="hello@lyniqstudio.com" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255));--framer-paragraph-spacing:0px;opacity:1;transform:none"><p dir="auto" class="framer-text" style="--font-selector:SW50ZXItU2VtaUJvbGQ=;--framer-font-size:26px;--framer-font-weight:600;--framer-letter-spacing:-0.07em;--framer-line-height:110%;--framer-text-color:var(--extracted-r6o4lv, var(--token-d74d16c5-23aa-4649-a2ad-0da8c936dade, rgb(255, 255, 255)))"><!--$--><a class="framer-text framer-styles-preset-1nr60og" data-styles-preset="Z43DfkPk9" href="mailto:hello@lyniqstudio.com" target="_blank" rel="noopener">info@competencelabs.com</a><!--/$--></p></div></div><nav class="framer-1w3jqcb" data-framer-name="Nav" style="opacity:1"><!--$--><div class="framer-egomgl-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-8ibbxv framer-146nb98" data-framer-name="Tablet-Phone" data-highlight="true" href="/" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Home</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1h652bd-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-8ibbxv framer-146nb98" data-framer-name="Tablet-Phone" data-highlight="true" href="/services" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Dienstleistungen</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-15s0tgm-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/about" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Über uns</p></div></a><!--/$--></div><!--/$--><!--$--><div class="framer-1bpq57u-container"><!--$--><a class="framer-Rq3Pv framer-M6KO6 framer-76oe1d framer-v-76oe1d framer-146nb98" data-framer-name="Desktop" data-highlight="true" href="/contact" tabindex="0"><div class="framer-1vowgdm" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div><div class="framer-7xhv9u" data-framer-component-type="RichTextContainer" style="--framer-paragraph-spacing:0px;transform:none"><p class="framer-text framer-styles-preset-10ygvy8" data-styles-preset="pFXRpm75X">Kontakt</p></div></a><!--/$--></div><!--/$--></nav></div><div class="framer-akdqg1" data-framer-name="Overlay" style="background:linear-gradient(180deg, var(--token-6d50dcda-1f6c-4d8d-a9cc-5a55ae9f7ec9, rgb(163, 13, 248)) 0%, rgb(0, 0, 0) 100%)"></div></div></header></div></div><main class="framer-190ov9c" data-framer-name="Main"><div class="framer-1snj22b" data-framer-name="Container"><div class="framer-ygegx" data-framer-name="Text"><div class="ssr-variant hidden-1ettma hidden-8x73lm"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:210px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="ssr-variant hidden-1dafmry hidden-8x73lm"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:190px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1s5h6zi" data-framer-component-type="RichTextContainer" style="transform:none"><p style="--font-selector:RlM7QmViYXMgTmV1ZS1yZWd1bGFy;--framer-font-family:&quot;Bebas Neue&quot;, &quot;Bebas Neue Placeholder&quot;, sans-serif;--framer-font-size:120px;--framer-letter-spacing:-0.04em;--framer-line-height:1em;--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))" class="framer-text">404</p></div></div><div class="framer-wm52ho" data-framer-name="text"><div class="framer-wl1mmz" data-framer-component-type="RichTextContainer" style="transform:none"><p class="framer-text framer-styles-preset-5jibgy" data-styles-preset="DPl1XeZ47" style="--framer-text-alignment:center;--framer-text-color:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12))">Page not found</p></div><div class="framer-our7iv" data-framer-component-type="RichTextContainer" style="transform:none"><p class="framer-text framer-styles-preset-1raml1m" data-styles-preset="hOrfMQMhw" style="--framer-text-alignment:center;--framer-text-color:rgba(12, 12, 12, 0.6)">The page you are looking for could not be found</p></div></div></div><!--$--><div class="ssr-variant hidden-8x73lm"><div class="framer-1vndu3l-container"><button class="framer-KR0up framer-PJOjX framer-az50z5 framer-v-az50z5" data-framer-name="Desktop" data-reset="button"><!--$--><a class="framer-13x93le framer-dbdkto" data-framer-name="Link" href="/" style="background-color:rgba(0, 0, 0, 0);border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px"><div class="framer-1m71lft-container" style="opacity:1;transform:none"><!--$--><div style="display:contents"></div><!--/$--></div><div class="framer-7q3foz" data-framer-name="Let’s talk" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-zvTGbXZx3-ozPjcS5mp);--framer-paragraph-spacing:0px;--variable-reference-zvTGbXZx3-ozPjcS5mp:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text framer-styles-preset-1dmjd5e" data-styles-preset="q35quwzCc" style="--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-zvTGbXZx3-ozPjcS5mp))">Back to Homepage</p></div></a><!--/$--></button></div></div><div class="ssr-variant hidden-1dafmry hidden-1ettma"><div class="framer-1vndu3l-container"><button class="framer-KR0up framer-PJOjX framer-az50z5 framer-v-1tzney4" data-framer-name="Phone" data-reset="button"><!--$--><a class="framer-13x93le framer-dbdkto" data-framer-name="Link" href="/" style="background-color:rgba(0, 0, 0, 0);border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px"><div class="framer-1m71lft-container" style="opacity:1;transform:none"><!--$--><div style="display:contents"></div><!--/$--></div><div class="framer-7q3foz" data-framer-name="Let’s talk" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv:var(--variable-reference-zvTGbXZx3-ozPjcS5mp);--framer-paragraph-spacing:0px;--variable-reference-zvTGbXZx3-ozPjcS5mp:var(--token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8, rgb(12, 12, 12));transform:none"><p class="framer-text framer-styles-preset-1dmjd5e" data-styles-preset="q35quwzCc" style="--framer-text-color:var(--extracted-r6o4lv, var(--variable-reference-zvTGbXZx3-ozPjcS5mp))">Back to Homepage</p></div></a><!--/$--></button></div></div><!--/$--></div></main><div class="framer-15pfyy9-container hidden-8x73lm"><!--$--><div></div><!--/$--></div></div><div id="overlay"></div><div class="framer-1d1rntb"></div></div><!--/$--><div id="template-overlay"></div><!--/$--></div><script>(()=>{function u(){function n(t,e,i){let r=document.createElement("a");r.href=t,r.target=i,r.rel=e,document.body.appendChild(r),r.click(),r.remove()}function o(t){if(this.dataset.hydrated){this.removeEventListener("click",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");if(!e)return;if(/Mac|iPod|iPhone|iPad/u.test(navigator.userAgent)?t.metaKey:t.ctrlKey)return n(e,"","_blank");let r=this.getAttribute("rel")??"",c=this.getAttribute("target")??"";n(e,r,c)}function a(t){if(this.dataset.hydrated){this.removeEventListener("auxclick",o);return}t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");e&&n(e,"","_blank")}function s(t){if(this.dataset.hydrated){this.removeEventListener("keydown",s);return}if(t.key!=="Enter")return;t.preventDefault(),t.stopPropagation();let e=this.getAttribute("href");if(!e)return;let i=this.getAttribute("rel")??"",r=this.getAttribute("target")??"";n(e,i,r)}document.querySelectorAll("[data-nested-link]").forEach(t=>{t instanceof HTMLElement&&(t.addEventListener("click",o),t.addEventListener("auxclick",a),t.addEventListener("keydown",s))})}return u})()()</script><script>(()=>{function P(e,t){if(!e.startsWith("/")||!t.startsWith("/"))throw new Error("from/to paths are expected to be absolute");let[s]=S(e),[l,o]=S(t),n=w(s,l);return n===""&&(n="."),!n.startsWith(".")&&!n.startsWith("/")&&(n="./"+n),n+"/"+o}function S(e){let t=e.lastIndexOf("/");return[e.substring(0,t+1),e.substring(t+1)]}var m=46,g=47,a=(e,t)=>e.charCodeAt(t),b=(e,t)=>e.lastIndexOf(t),h=(e,t,s)=>e.slice(t,s);function w(e,t){if(e===t||(e="/"+A(e),t="/"+A(t),e===t))return"";let s=1,l=e.length,o=l-s,n=1,i=t.length-n,f=o<i?o:i,c=-1,r=0;for(;r<f;r++){let p=a(e,s+r);if(p!==a(t,n+r))break;p===g&&(c=r)}if(r===f)if(i>f){if(a(t,n+r)===g)return h(t,n+r+1);if(r===0)return h(t,n+r)}else o>f&&(a(e,s+r)===g?c=r:r===0&&(c=0));let d="";for(r=s+c+1;r<=l;++r)(r===l||a(e,r)===g)&&(d+=d.length===0?"..":"/..");return`${d}${h(t,n+c)}`}var C=!1,u="/",x=e=>e===g;function A(e){let t="",s=0,l=-1,o=0,n=0;for(let i=0;i<=e.length;++i){if(i<e.length)n=a(e,i);else{if(x(n))break;n=g}if(x(n)){if(!(l===i-1||o===1))if(o===2){if(t.length<2||s!==2||a(t,t.length-1)!==m||a(t,t.length-2)!==m){if(t.length>2){let f=b(t,u);f===-1?(t="",s=0):(t=h(t,0,f),s=t.length-1-b(t,u)),l=i,o=0;continue}else if(t.length!==0){t="",s=0,l=i,o=0;continue}}C&&(t+=t.length>0?`${u}..`:"..",s=2)}else t.length>0?t+=`${u}${h(e,l+1,i)}`:t=h(e,l+1,i),s=i-l-1;l=i,o=0}else n===m&&o!==-1?++o:o=-1}return t}function R(e){if(!e)return"";let t;try{t=new URL(e)}catch{return""}return t.pathname==="/"||window.location.origin!==t.origin?"":t.pathname.endsWith("/")?t.pathname.slice(0,-1):t.pathname}function D(e,t){let l="https://example.com"+R(e)+t,o=document.querySelectorAll("#main a");for(let n of o){let i=n.getAttribute("href");if(!i||i.charCodeAt(0)!==46)continue;let f=new URL(i,l),c=window.location.pathname,r=P(c,f.pathname+f.search+f.hash);n.setAttribute("href",r)}}return D})()("https://fuzzy-system-583141.framer.app", "/404")</script>
 	<script>!function(){var w="framer_variant";function u(a,r){let e=r.indexOf("#"),t=e===-1?r:r.substring(0,e),o=e===-1?"":r.substring(e),n=t.indexOf("?"),h=n===-1?t:t.substring(0,n),d=n===-1?"":t.substring(n),s=new URLSearchParams(d),m=new URLSearchParams(a);for(let[i,l]of m)s.has(i)||i!==w&&s.append(i,l);let c=s.toString();return c===""?t+o:h+"?"+c+o}var g='div#main a[href^="#"],div#main a[href^="/"],div#main a[href^="."]',f="div#main a[data-framer-preserve-params]",S=document.currentScript?.hasAttribute("data-preserve-internal-params");if(window.location.search&&!navigator.webdriver&&!/bot|-google|google-|yandex|ia_archiver|crawl|spider/iu.test(navigator.userAgent)){let a=document.querySelectorAll(S?`${g},${f}`:f);for(let r of a){let e=u(window.location.search,r.href);r.setAttribute("href",e)}}
 }()</script>
 	
