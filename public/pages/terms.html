@@ -204,6 +204,35 @@
      regardless of that flag's state in any visitor's browser. */
   #__framer-editorbar { display: none !important; }
 </style>
+
+	<!-- Global Custom Header Logo Styling and Script -->
+	<style id="cl-global-header-logo-style">
+	header img,
+	.framer-1ed0056 img,
+	.framer-joevt5 img {
+		content: url('/assets/images/logo.png') !important;
+	}
+	</style>
+	<script id="cl-global-header-logo-script">
+	(function() {
+		function updateLogo() {
+			var logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img');
+			logoImgs.forEach(function(img) {
+				if (img.getAttribute('src') !== '/assets/images/logo.png') {
+					img.setAttribute('src', '/assets/images/logo.png');
+					img.removeAttribute('srcset');
+				}
+			});
+		}
+		updateLogo();
+		var logoInterval = setInterval(updateLogo, 250);
+		setTimeout(function() { clearInterval(logoInterval); }, 15000);
+		
+		var observer = new MutationObserver(updateLogo);
+		observer.observe(document.body, { childList: true, subtree: true });
+	})();
+	</script>
+
 </head>
 <body>
 	<script async src="https://events.framer.com/script?v=2" data-fid="3d97e98a64dbb3dc6e8a6f767c47dcf2f4ba2135718055f806654ca3ba696044" data-no-nt></script>
