@@ -186,11 +186,16 @@
 	
 
 
+	
+
+
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
 	header img,
 	.framer-1ed0056 img,
-	.framer-joevt5 img {
+	.framer-joevt5 img,
+	.framer-1otr4zy img,
+	[data-framer-name="Main White Background Logo"] img {
 		content: url('/assets/images/logo.png') !important;
 	}
 	/* Enlarge the header logo container */
@@ -202,7 +207,7 @@
 	<script id="cl-global-header-logo-script">
 	(function() {
 		function updateLogo() {
-			var logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img');
+			var logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img, .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
 			logoImgs.forEach(function(img) {
 				if (img.getAttribute('src') !== '/assets/images/logo.png') {
 					img.setAttribute('src', '/assets/images/logo.png');

@@ -11,7 +11,9 @@ const LOGO_CSS_AND_JS = `
 \t<style id="cl-global-header-logo-style">
 \theader img,
 \t.framer-1ed0056 img,
-\t.framer-joevt5 img {
+\t.framer-joevt5 img,
+\t.framer-1otr4zy img,
+\t[data-framer-name="Main White Background Logo"] img {
 \t\tcontent: url('/assets/images/logo.png') !important;
 \t}
 \t/* Enlarge the header logo container */
@@ -23,7 +25,7 @@ const LOGO_CSS_AND_JS = `
 \t<script id="cl-global-header-logo-script">
 \t(function() {
 \t\tfunction updateLogo() {
-\t\t\tvar logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img');
+\t\t\tvar logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img, .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
 \t\t\tlogoImgs.forEach(function(img) {
 \t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo.png') {
 \t\t\t\t\timg.setAttribute('src', '/assets/images/logo.png');
