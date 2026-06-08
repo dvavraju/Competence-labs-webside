@@ -14,6 +14,11 @@ const LOGO_CSS_AND_JS = `
 \t.framer-joevt5 img {
 \t\tcontent: url('/assets/images/logo.png') !important;
 \t}
+\t/* Enlarge the header logo container */
+\t.framer-joevt5 {
+\t\twidth: 155px !important;
+\t\theight: 40px !important;
+\t}
 \t</style>
 \t<script id="cl-global-header-logo-script">
 \t(function() {
