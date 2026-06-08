@@ -189,13 +189,16 @@
 	
 
 
+	
+
+
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
+	/* 1. Header Logo */
+	img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
 	header img,
 	.framer-1ed0056 img,
-	.framer-joevt5 img,
-	.framer-1otr4zy img,
-	[data-framer-name="Main White Background Logo"] img {
+	.framer-joevt5 img {
 		content: url('/assets/images/logo.png') !important;
 	}
 	/* Enlarge the header logo container */
@@ -203,23 +206,58 @@
 		width: 155px !important;
 		height: 40px !important;
 	}
+
+	/* 2. Description Section Logo */
+	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
+	.framer-1otr4zy img,
+	[data-framer-name="Main White Background Logo"] img {
+		content: url('/assets/images/logo.png') !important;
+	}
+
+	/* 3. Team Section Logo */
+	img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
+	.framer-1xnime3 img,
+	.framer-2ufe3c-container img,
+	[data-framer-name="Logo desktop"] img,
+	[data-framer-name="Main Black Background Logo"] img {
+		content: url('/assets/images/logo-team.png') !important;
+	}
 	</style>
 	<script id="cl-global-header-logo-script">
 	(function() {
-		function updateLogo() {
-			var logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img, .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
-			logoImgs.forEach(function(img) {
+		function updateLogos() {
+			// Header Logo
+			var headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], header img, .framer-1ed0056 img, .framer-joevt5 img');
+			headerImgs.forEach(function(img) {
 				if (img.getAttribute('src') !== '/assets/images/logo.png') {
 					img.setAttribute('src', '/assets/images/logo.png');
 					img.removeAttribute('srcset');
 				}
 			});
+
+			// Description Section Logo
+			var descImgs = document.querySelectorAll('img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
+			descImgs.forEach(function(img) {
+				if (img.getAttribute('src') !== '/assets/images/logo.png') {
+					img.setAttribute('src', '/assets/images/logo.png');
+					img.removeAttribute('srcset');
+				}
+			});
+
+			// Team Section Logo
+			var teamImgs = document.querySelectorAll('img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"], .framer-1xnime3 img, .framer-2ufe3c-container img, [data-framer-name="Logo desktop"] img, [data-framer-name="Main Black Background Logo"] img');
+			teamImgs.forEach(function(img) {
+				if (img.getAttribute('src') !== '/assets/images/logo-team.png') {
+					img.setAttribute('src', '/assets/images/logo-team.png');
+					img.removeAttribute('srcset');
+				}
+			});
 		}
-		updateLogo();
-		var logoInterval = setInterval(updateLogo, 250);
+		updateLogos();
+		var logoInterval = setInterval(updateLogos, 250);
 		setTimeout(function() { clearInterval(logoInterval); }, 15000);
 		
-		var observer = new MutationObserver(updateLogo);
+		var observer = new MutationObserver(updateLogos);
 		observer.observe(document.body, { childList: true, subtree: true });
 	})();
 	</script>

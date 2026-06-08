@@ -9,11 +9,11 @@ const pagesDir = path.join(root, 'public', 'pages')
 const LOGO_CSS_AND_JS = `
 \t<!-- Global Custom Header Logo Styling and Script -->
 \t<style id="cl-global-header-logo-style">
+\t/* 1. Header Logo */
+\timg[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
 \theader img,
 \t.framer-1ed0056 img,
-\t.framer-joevt5 img,
-\t.framer-1otr4zy img,
-\t[data-framer-name="Main White Background Logo"] img {
+\t.framer-joevt5 img {
 \t\tcontent: url('/assets/images/logo.png') !important;
 \t}
 \t/* Enlarge the header logo container */
@@ -21,23 +21,58 @@ const LOGO_CSS_AND_JS = `
 \t\twidth: 155px !important;
 \t\theight: 40px !important;
 \t}
+
+\t/* 2. Description Section Logo */
+\timg[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
+\t.framer-1otr4zy img,
+\t[data-framer-name="Main White Background Logo"] img {
+\t\tcontent: url('/assets/images/logo.png') !important;
+\t}
+
+\t/* 3. Team Section Logo */
+\timg[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
+\t.framer-1xnime3 img,
+\t.framer-2ufe3c-container img,
+\t[data-framer-name="Logo desktop"] img,
+\t[data-framer-name="Main Black Background Logo"] img {
+\t\tcontent: url('/assets/images/logo-team.png') !important;
+\t}
 \t</style>
 \t<script id="cl-global-header-logo-script">
 \t(function() {
-\t\tfunction updateLogo() {
-\t\t\tvar logoImgs = document.querySelectorAll('header img, .framer-1ed0056 img, .framer-joevt5 img, .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
-\t\t\tlogoImgs.forEach(function(img) {
+\t\tfunction updateLogos() {
+\t\t\t// Header Logo
+\t\t\tvar headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], header img, .framer-1ed0056 img, .framer-joevt5 img');
+\t\t\theaderImgs.forEach(function(img) {
 \t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo.png') {
 \t\t\t\t\timg.setAttribute('src', '/assets/images/logo.png');
 \t\t\t\t\timg.removeAttribute('srcset');
 \t\t\t\t}
 \t\t\t});
+
+\t\t\t// Description Section Logo
+\t\t\tvar descImgs = document.querySelectorAll('img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
+\t\t\tdescImgs.forEach(function(img) {
+\t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo.png') {
+\t\t\t\t\timg.setAttribute('src', '/assets/images/logo.png');
+\t\t\t\t\timg.removeAttribute('srcset');
+\t\t\t\t}
+\t\t\t});
+
+\t\t\t// Team Section Logo
+\t\t\tvar teamImgs = document.querySelectorAll('img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"], .framer-1xnime3 img, .framer-2ufe3c-container img, [data-framer-name="Logo desktop"] img, [data-framer-name="Main Black Background Logo"] img');
+\t\t\tteamImgs.forEach(function(img) {
+\t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo-team.png') {
+\t\t\t\t\timg.setAttribute('src', '/assets/images/logo-team.png');
+\t\t\t\t\timg.removeAttribute('srcset');
+\t\t\t\t}
+\t\t\t});
 \t\t}
-\t\tupdateLogo();
-\t\tvar logoInterval = setInterval(updateLogo, 250);
+\t\tupdateLogos();
+\t\tvar logoInterval = setInterval(updateLogos, 250);
 \t\tsetTimeout(function() { clearInterval(logoInterval); }, 15000);
 \t\t
-\t\tvar observer = new MutationObserver(updateLogo);
+\t\tvar observer = new MutationObserver(updateLogos);
 \t\tobserver.observe(document.body, { childList: true, subtree: true });
 \t})();
 \t</script>
