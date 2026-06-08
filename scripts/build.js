@@ -88,7 +88,7 @@ for (const { src, dest } of PAGES) {
 // page as /i18n.js — previously omitted, which left the live deploy without
 // the language switcher and all translated content, 404'ing on every page).
 console.log('\n📜  Root scripts:')
-const ROOT_FILES = ['i18n.js']
+const ROOT_FILES = ['i18n.js', '.htaccess']
 for (const name of ROOT_FILES) {
   const srcAbs  = path.join(root, 'public', name)
   const destAbs = path.join(distDir, name)

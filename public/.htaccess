@@ -1,0 +1,6 @@
+# Hostinger (LiteSpeed/Apache) serves .mjs as text/plain by default, which
+# browsers reject for ES module scripts ("Failed to load module script:
+# Expected a JavaScript-or-Wasm module script but the server responded with
+# a MIME type of text/plain"). That breaks every framer-chunks/*.mjs load,
+# so the React app never hydrates and the whole site stays static/inert.
+AddType text/javascript .mjs .js
