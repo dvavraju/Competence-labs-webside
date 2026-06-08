@@ -9,36 +9,55 @@ const pagesDir = path.join(root, 'public', 'pages')
 const LOGO_CSS_AND_JS = `
 \t<!-- Global Custom Header Logo Styling and Script -->
 \t<style id="cl-global-header-logo-style">
-\t/* 1. Header Logo */
+\t/* Hide original responsive CDN logo images to prevent srcset override and flickers */
 \timg[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
+\timg[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
+\timg[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
 \theader img,
 \t.framer-1ed0056 img,
-\t.framer-joevt5 img {
-\t\tcontent: url('/assets/images/logo.png') !important;
+\t.framer-joevt5 img,
+\t.framer-1otr4zy img,
+\t.framer-1xnime3 img,
+\t.framer-2ufe3c-container img {
+\t\tdisplay: none !important;
+\t\topacity: 0 !important;
 \t}
+
 \t/* Enlarge the header logo container */
 \t.framer-joevt5 {
 \t\twidth: 155px !important;
 \t\theight: 40px !important;
 \t}
 
-\t/* 2. Description Section Logo */
-\timg[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
-\t.framer-1otr4zy img,
-\t[data-framer-name="Main White Background Logo"] img {
-\t\tcontent: url('/assets/images/logo.png') !important;
+\t/* 1. Header Logo & Description Section Logo background replacement */
+\t.framer-joevt5,
+\t.framer-joevt5 [data-framer-background-image-wrapper="true"],
+\t.framer-1otr4zy,
+\t.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+\t\tbackground-image: url('/assets/images/logo.png') !important;
+\t\tbackground-size: contain !important;
+\t\tbackground-repeat: no-repeat !important;
+\t\tbackground-position: left center !important;
+\t}
+\t
+\t/* Align description section logo to center */
+\t.framer-1otr4zy,
+\t.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+\t\tbackground-position: center !important;
 \t}
 
-\t/* 3. Team Section Logo */
-\timg[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
-\t.framer-1xnime3 img,
-\t.framer-2ufe3c-container img,
-\t[data-framer-name="Logo desktop"] img,
-\t[data-framer-name="Main Black Background Logo"] img {
-\t\tcontent: url('/assets/images/logo-team.png') !important;
+\t/* 2. Team Section Logo background replacement */
+\t.framer-1xnime3,
+\t.framer-1xnime3 [data-framer-background-image-wrapper="true"],
+\t.framer-2ufe3c-container,
+\t.framer-2ufe3c-container [data-framer-background-image-wrapper="true"] {
+\t\tbackground-image: url('/assets/images/logo-team.png') !important;
+\t\tbackground-size: contain !important;
+\t\tbackground-repeat: no-repeat !important;
+\t\tbackground-position: center !important;
 \t}
 
-\t/* 4. Force Menu Overlay Text and Links to be White */
+\t/* 3. Force Menu Overlay Text and Links to be White */
 \t.framer-xbsob7,
 \t.framer-xbsob7 *,
 \t.framer-1w3jqcb,
@@ -55,8 +74,9 @@ const LOGO_CSS_AND_JS = `
 \t(function() {
 \t\tfunction updateLogos() {
 \t\t\t// Header Logo
-\t\t\tvar headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], header img, .framer-1ed0056 img, .framer-joevt5 img');
+\t\t\tvar headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], header img, .framer-1ed0056 img, .framer-joevt5 img');
 \t\t\theaderImgs.forEach(function(img) {
+\t\t\t\timg.style.display = 'none';
 \t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo.png') {
 \t\t\t\t\timg.setAttribute('src', '/assets/images/logo.png');
 \t\t\t\t\timg.removeAttribute('srcset');
@@ -66,6 +86,7 @@ const LOGO_CSS_AND_JS = `
 \t\t\t// Description Section Logo
 \t\t\tvar descImgs = document.querySelectorAll('img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
 \t\t\tdescImgs.forEach(function(img) {
+\t\t\t\timg.style.display = 'none';
 \t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo.png') {
 \t\t\t\t\timg.setAttribute('src', '/assets/images/logo.png');
 \t\t\t\t\timg.removeAttribute('srcset');
@@ -75,6 +96,7 @@ const LOGO_CSS_AND_JS = `
 \t\t\t// Team Section Logo
 \t\t\tvar teamImgs = document.querySelectorAll('img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"], .framer-1xnime3 img, .framer-2ufe3c-container img, [data-framer-name="Logo desktop"] img, [data-framer-name="Main Black Background Logo"] img');
 \t\t\tteamImgs.forEach(function(img) {
+\t\t\t\timg.style.display = 'none';
 \t\t\t\tif (img.getAttribute('src') !== '/assets/images/logo-team.png') {
 \t\t\t\t\timg.setAttribute('src', '/assets/images/logo-team.png');
 \t\t\t\t\timg.removeAttribute('srcset');

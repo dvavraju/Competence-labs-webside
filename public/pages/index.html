@@ -408,38 +408,60 @@
 	
 
 
+	
+
+
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
-	/* 1. Header Logo */
+	/* Hide original responsive CDN logo images to prevent srcset override and flickers */
 	img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
+	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
+	img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
 	header img,
 	.framer-1ed0056 img,
-	.framer-joevt5 img {
-		content: url('/assets/images/logo.png') !important;
+	.framer-joevt5 img,
+	.framer-1otr4zy img,
+	.framer-1xnime3 img,
+	.framer-2ufe3c-container img {
+		display: none !important;
+		opacity: 0 !important;
 	}
+
 	/* Enlarge the header logo container */
 	.framer-joevt5 {
 		width: 155px !important;
 		height: 40px !important;
 	}
 
-	/* 2. Description Section Logo */
-	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
-	.framer-1otr4zy img,
-	[data-framer-name="Main White Background Logo"] img {
-		content: url('/assets/images/logo.png') !important;
+	/* 1. Header Logo & Description Section Logo background replacement */
+	.framer-joevt5,
+	.framer-joevt5 [data-framer-background-image-wrapper="true"],
+	.framer-1otr4zy,
+	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+		background-image: url('/assets/images/logo.png') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
+		background-position: left center !important;
+	}
+	
+	/* Align description section logo to center */
+	.framer-1otr4zy,
+	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+		background-position: center !important;
 	}
 
-	/* 3. Team Section Logo */
-	img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"],
-	.framer-1xnime3 img,
-	.framer-2ufe3c-container img,
-	[data-framer-name="Logo desktop"] img,
-	[data-framer-name="Main Black Background Logo"] img {
-		content: url('/assets/images/logo-team.png') !important;
+	/* 2. Team Section Logo background replacement */
+	.framer-1xnime3,
+	.framer-1xnime3 [data-framer-background-image-wrapper="true"],
+	.framer-2ufe3c-container,
+	.framer-2ufe3c-container [data-framer-background-image-wrapper="true"] {
+		background-image: url('/assets/images/logo-team.png') !important;
+		background-size: contain !important;
+		background-repeat: no-repeat !important;
+		background-position: center !important;
 	}
 
-	/* 4. Force Menu Overlay Text and Links to be White */
+	/* 3. Force Menu Overlay Text and Links to be White */
 	.framer-xbsob7,
 	.framer-xbsob7 *,
 	.framer-1w3jqcb,
@@ -456,8 +478,9 @@
 	(function() {
 		function updateLogos() {
 			// Header Logo
-			var headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], header img, .framer-1ed0056 img, .framer-joevt5 img');
+			var headerImgs = document.querySelectorAll('img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"], img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], header img, .framer-1ed0056 img, .framer-joevt5 img');
 			headerImgs.forEach(function(img) {
+				img.style.display = 'none';
 				if (img.getAttribute('src') !== '/assets/images/logo.png') {
 					img.setAttribute('src', '/assets/images/logo.png');
 					img.removeAttribute('srcset');
@@ -467,6 +490,7 @@
 			// Description Section Logo
 			var descImgs = document.querySelectorAll('img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"], .framer-1otr4zy img, [data-framer-name="Main White Background Logo"] img');
 			descImgs.forEach(function(img) {
+				img.style.display = 'none';
 				if (img.getAttribute('src') !== '/assets/images/logo.png') {
 					img.setAttribute('src', '/assets/images/logo.png');
 					img.removeAttribute('srcset');
@@ -476,6 +500,7 @@
 			// Team Section Logo
 			var teamImgs = document.querySelectorAll('img[src*="PubWQVztlJFvyd49JO2oB7p6EWc"], .framer-1xnime3 img, .framer-2ufe3c-container img, [data-framer-name="Logo desktop"] img, [data-framer-name="Main Black Background Logo"] img');
 			teamImgs.forEach(function(img) {
+				img.style.display = 'none';
 				if (img.getAttribute('src') !== '/assets/images/logo-team.png') {
 					img.setAttribute('src', '/assets/images/logo-team.png');
 					img.removeAttribute('srcset');
@@ -711,6 +736,7 @@
 	
 	
 	
+		
 		
 		
 		
