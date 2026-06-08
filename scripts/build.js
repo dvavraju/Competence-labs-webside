@@ -84,6 +84,21 @@ for (const { src, dest } of PAGES) {
   copyFile(srcAbs, destAbs)
 }
 
+// Copy loose root-level public files (e.g. i18n.js, referenced from every
+// page as /i18n.js — previously omitted, which left the live deploy without
+// the language switcher and all translated content, 404'ing on every page).
+console.log('\n📜  Root scripts:')
+const ROOT_FILES = ['i18n.js']
+for (const name of ROOT_FILES) {
+  const srcAbs  = path.join(root, 'public', name)
+  const destAbs = path.join(distDir, name)
+  if (fs.existsSync(srcAbs)) {
+    copyFile(srcAbs, destAbs)
+  } else {
+    console.warn(`  ⚠  Missing: public/${name}`)
+  }
+}
+
 // Copy framer chunks
 console.log('\n📦  Framer chunks:')
 const chunksDir     = path.join(root, 'public', 'framer-chunks')
