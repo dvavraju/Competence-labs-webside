@@ -310,8 +310,26 @@
 	
 	
 
+	
+	
+
+	
+	
+
+	
+	
+
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
+	/* Framer's ":root body { background: var(--token-09fd1980..., rgb(12,12,12)) }" uses
+	   this CSS variable for the page background color. The variable is only defined by the
+	   Framer JS chunks after they load. Until then the fallback rgb(12,12,12) makes every
+	   page flash near-black during navigation. Defining it here as white eliminates the
+	   flash. Framer's JS also sets the token on the body's inline style which overrides the
+	   :root definition, so we force body background directly with !important too. */
+	:root { --token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8: rgb(255, 255, 255); }
+	body { background-color: #ffffff !important; }
+
 	/* Hide original responsive CDN logo images to prevent srcset override and flickers */
 	img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
 	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],
@@ -531,6 +549,13 @@
 
 			styleEl.setAttribute('data-theme-mode', expectedMode);
 			styleEl.innerHTML = `
+	/* Prevent dark background flash — define Framer's page-color token as white
+	   so its fallback rgb(12,12,12) is never used before chunks load. Framer's JS
+	   also sets the token as an inline body style (overriding our :root value), so
+	   we also force body background-color directly with !important to win regardless. */
+	:root { --token-09fd1980-8076-4f0b-8bb4-7ba5919ad6b8: rgb(255, 255, 255); }
+	body { background-color: #ffffff !important; }
+
 	/* Hide original responsive CDN logo images to prevent srcset override and flickers */
 	img[src*="FWNkv69JGijvxHCNNVcTqsdMmFg"],
 	img[src*="hFyLPLK9uaWEn5J5Qh40cFJ3os"],

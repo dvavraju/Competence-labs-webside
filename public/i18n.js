@@ -403,6 +403,21 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       }
       #cl-lang-select option { background: #1a1a1a; color: #fff; }
+
+      /* Mobile (≤809px, this site's "Phone" breakpoint): the switcher can't
+         sit beside MENU without overlapping the logo at that width, so it
+         floats as its own pill in the bottom-right corner instead. Needs a
+         solid background + shadow (rather than the translucent, header-themed
+         look used beside MENU) since it now sits over arbitrary page content
+         that scrolls beneath it, not a fixed header. */
+      #cl-lang-switcher.cl-floating #cl-lang-select {
+        color: #fff !important;
+        background-color: rgba(22,22,22,0.9) !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+        padding: 9px 30px 9px 14px;
+        font-size: 14px;
+      }
     `;
     document.head.appendChild(style);
 
@@ -521,7 +536,38 @@
     let menu = findMenu();
     let lastPositionKey = '';
 
+    // This site's own Framer breakpoint cutoff for "Phone" layout — see the
+    // mediaQuery values baked into the page's data-framer-hydrate-v2 JSON
+    // ("(max-width: 809.98px)" / "(min-width: 810px)..."). Below it, MENU
+    // sits close enough to the logo that a beside-MENU switcher overlaps the
+    // logo text — so on phones it floats bottom-right instead.
+    const MOBILE_MAX_WIDTH = 809;
+
+    function applyFloatingPosition() {
+      if (!wrapper.classList.contains('cl-floating')) {
+        wrapper.classList.add('cl-floating');
+        // Clear desktop-mode placement so it doesn't fight the floating spot
+        wrapper.style.top  = 'auto';
+        wrapper.style.left = 'auto';
+      }
+      wrapper.style.right    = '20px';
+      wrapper.style.bottom   = 'calc(20px + env(safe-area-inset-bottom, 0px))';
+      wrapper.style.visibility = 'visible';
+    }
+
     function applyPosition() {
+      if (window.innerWidth <= MOBILE_MAX_WIDTH) {
+        applyFloatingPosition();
+        return;
+      }
+      if (wrapper.classList.contains('cl-floating')) {
+        // Crossed back over the breakpoint (resize/rotation) — drop the
+        // floating styles so the beside-MENU placement below takes over clean.
+        wrapper.classList.remove('cl-floating');
+        wrapper.style.bottom = 'auto';
+        lastPositionKey = '';
+      }
+
       const r = menu.btn ? menu.btn.getBoundingClientRect() : null;
       // `> 1` rather than `> 0` on purpose: this site plays an intro/splash
       // animation and Framer fades/scales the header in on top of that — a
