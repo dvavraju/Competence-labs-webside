@@ -520,13 +520,13 @@
 	    hyphens: none !important;
 	    overflow-wrap: normal !important;
 	  }
-	  /* SEO card: 12px so "Suchmaschinen<wbr>optimierung (SEO)" splits into
-	     exactly 2 clean lines (86px / 112px — both fit in 127px content area) */
+	  /* SEO card: 12px + break-word; JS re-inserts <wbr> after Framer hydration
+	     to split as "Suchmaschinen" (94px) / "optimierung (SEO)" (111px) */
 	  [data-framer-name="Card Three"] [data-framer-name="Contact us"] p,
 	  [data-framer-name="Card Three"] [data-framer-name="Contact us"] p strong {
 	    font-size: 12px !important;
 	    hyphens: none !important;
-	    overflow-wrap: normal !important;
+	    overflow-wrap: break-word !important;
 	  }
 	  /* "Starke Kundenbeziehungen und Folgegeschäfte" phone-mockup caption:
 	     reduce from 20px to fit inside the narrower phone section container */
@@ -536,7 +536,31 @@
 	    font-size: 12px !important;
 	  }
 	}
+	/* SEO card desktop/tablet: 18px so "Suchmaschinenoptimierung" (261px) fits in
+	   the 289px card on one line; "(SEO)" wraps naturally at the space */
+	@media (min-width: 810px) {
+	  [data-framer-name="Card Three"] [data-framer-name="Contact us"] p,
+	  [data-framer-name="Card Three"] [data-framer-name="Contact us"] p strong {
+	    font-size: 18px !important;
+	    overflow-wrap: normal !important;
+	    hyphens: none !important;
+	  }
+	}
 	</style>
+
+	<!-- Re-insert <wbr> into SEO card title after Framer JS hydration strips it -->
+	<script>
+	(function() {
+	  function fixSeoTitle() {
+	    document.querySelectorAll('strong.framer-text').forEach(function(el) {
+	      if (el.textContent.trim() === 'Suchmaschinenoptimierung (SEO)' && !el.querySelector('wbr')) {
+	        el.innerHTML = 'Suchmaschinen<wbr>optimierung (SEO)';
+	      }
+	    });
+	  }
+	  [200, 800, 1500, 3000].forEach(function(d) { setTimeout(fixSeoTitle, d); });
+	})();
+	</script>
 
 	<!-- Global Custom Header Logo Styling and Script -->
 	<style id="cl-global-header-logo-style">
