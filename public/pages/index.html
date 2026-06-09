@@ -564,6 +564,11 @@
 	    '  .framer-phl2vz a[data-framer-name="Phone active"],',
 	    '  .framer-phl2vz a[data-framer-name="Phone inactive"] {',
 	    '    pointer-events: none !important;',
+	    // Force full width on every service item at all times — when React
+	    // updates an item's inline style during activation it may drop
+	    // width:100%, leaving the CSS-class width:320px to apply and making
+	    // the item appear narrow/broken (most noticeable on item 5).
+	    '    width: 100% !important;',
 	    '  }',
 	    '  .framer-phl2vz, .framer-phl2vz > * {',
 	    '    pointer-events: auto !important;',
@@ -641,10 +646,10 @@
 	    msEvent('mouseenter',    link, false);
 	    prevLink = link;
 
-	    // Thaw animations after React has finished re-rendering (~80ms).
-	    // The description panel is always-visible via CSS above so no
-	    // opacity manipulation or scrollIntoView is needed.
-	    setTimeout(thawAnimations, 80);
+	    // Thaw animations after React has finished re-rendering. 300ms gives
+	    // item 5 (furthest from the default active state) enough time to
+	    // complete its re-render without the freeze window expiring early.
+	    setTimeout(thawAnimations, 300);
 	  }
 
 	  // Coordinate hit-test — links have pointer-events:none so e.target
