@@ -57,12 +57,24 @@ function getInjectableMarkup() {
 		background-position: left center !important;
 	}
 
+	/* framer-1otr4zy = footer/description logo (has background-image fallback).
+	   framer-11lcapo = inner container for "Main White Background Logo" in
+	   content sections (Creative force, etc.) — previously had bg:none so the
+	   CDN original img showed a black sphere instead of our purple one. Adding
+	   it here means the correct logo.png background appears immediately (no JS
+	   delay) and the original CDN img is made transparent. */
 	.framer-1otr4zy,
-	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+	.framer-1otr4zy [data-framer-background-image-wrapper="true"],
+	.framer-11lcapo,
+	.framer-11lcapo [data-framer-background-image-wrapper="true"] {
 		background-image: url('/assets/images/logo.png') !important;
 		background-size: contain !important;
 		background-repeat: no-repeat !important;
 		background-position: center !important;
+	}
+	.framer-11lcapo img,
+	.framer-1otr4zy img {
+		opacity: 0 !important;
 	}
 
 	/* The home page "Erfolgsgeschichten" ("Success Stories") heading sits in a
@@ -283,12 +295,24 @@ function getInjectableMarkup() {
 		background-position: left center !important;
 	}
 
+	/* framer-1otr4zy = footer/description logo (has background-image fallback).
+	   framer-11lcapo = inner container for "Main White Background Logo" in
+	   content sections (Creative force, etc.) — previously had bg:none so the
+	   CDN original img showed a black sphere instead of our purple one. Adding
+	   it here means the correct logo.png background appears immediately (no JS
+	   delay) and the original CDN img is made transparent. */
 	.framer-1otr4zy,
-	.framer-1otr4zy [data-framer-background-image-wrapper="true"] {
+	.framer-1otr4zy [data-framer-background-image-wrapper="true"],
+	.framer-11lcapo,
+	.framer-11lcapo [data-framer-background-image-wrapper="true"] {
 		background-image: url('/assets/images/logo.png') !important;
 		background-size: contain !important;
 		background-repeat: no-repeat !important;
 		background-position: center !important;
+	}
+	.framer-11lcapo img,
+	.framer-1otr4zy img {
+		opacity: 0 !important;
 	}
 
 	/* The home page "Erfolgsgeschichten" ("Success Stories") heading sits in a
