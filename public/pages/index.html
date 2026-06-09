@@ -551,18 +551,16 @@
 	
 
 	<script id="cl-home-services-mobile">
-	// On mobile (≤809px) the service <a> links navigate to /services on tap.
-	// Fix: CSS pointer-events:none disables link navigation (React cannot
-	// override a stylesheet rule). A touchstart listener on the container uses
-	// tap coordinates to identify the tapped service, then dispatches the
-	// proper PointerEvent leave/enter sequence so Framer's own state machine
-	// switches the active item and updates the description panel content.
+	// On mobile (≤809px) tapping a service row triggers Framer's hover state machine
+	// to swap the description panel content, without navigating and without glitchy
+	// re-entrance animations on the list items.
 	(function () {
 	  var MOBILE_MAX = 809;
+
+	  // Disable link navigation and enable tap on the list container.
 	  var styleTag = document.createElement('style');
 	  styleTag.textContent = [
 	    '@media (max-width: 809px) {',
-	    '  /* Disable browser link-following on service items */',
 	    '  .framer-phl2vz a[data-framer-name="Phone active"],',
 	    '  .framer-phl2vz a[data-framer-name="Phone inactive"] {',
 	    '    pointer-events: none !important;',
@@ -571,11 +569,46 @@
 	    '    pointer-events: auto !important;',
 	    '    cursor: pointer;',
 	    '  }',
+	    // Keep the description panel always visible on mobile so Framer
+	    // content updates are immediately seen without any opacity flash.
+	    '  [data-framer-name="Phone main"] .framer-vqugsr {',
+	    '    opacity: 1 !important;',
+	    '    will-change: auto !important;',
+	    '  }',
 	    '}'
 	  ].join('\n');
 	  document.head.appendChild(styleTag);
 
-	  var prevLink = null; // the last activated link element
+	  var prevLink = null;
+	  var freezeStyle = null;
+
+	  function getPhoneSection() {
+	    return document.querySelector('[data-framer-name="Phone main"]');
+	  }
+
+	  // Freeze all transitions/animations inside the Phone section so that
+	  // when Framer re-renders (potentially re-mounting list items with their
+	  // SSR entrance state opacity:0/translateX), the items jump to their
+	  // final state instantly instead of visibly re-animating.
+	  function freezeAnimations() {
+	    if (freezeStyle) return;
+	    freezeStyle = document.createElement('style');
+	    freezeStyle.id = 'cl-services-freeze';
+	    freezeStyle.textContent =
+	      '[data-framer-name="Phone main"] * {' +
+	      '  transition-duration: 0ms !important;' +
+	      '  animation-duration: 0ms !important;' +
+	      '  animation-delay: 0ms !important;' +
+	      '}';
+	    document.head.appendChild(freezeStyle);
+	  }
+
+	  function thawAnimations() {
+	    if (freezeStyle) {
+	      freezeStyle.remove();
+	      freezeStyle = null;
+	    }
+	  }
 
 	  function ptrEvent(type, el, bubbles, cancelable) {
 	    el.dispatchEvent(new PointerEvent(type, {
@@ -588,7 +621,11 @@
 	  }
 
 	  function activateItem(link) {
-	    // a) Leave the previous item so Framer's state machine deactivates it
+	    // Freeze animations before any state change so re-mounted list items
+	    // don't replay their translateX entrance animation.
+	    freezeAnimations();
+
+	    // Deactivate the previously active item.
 	    if (prevLink && prevLink !== link) {
 	      ptrEvent('pointerout',   prevLink, true,  true);
 	      ptrEvent('pointerleave', prevLink, false, false);
@@ -596,32 +633,22 @@
 	      msEvent('mouseleave',    prevLink, false);
 	    }
 
-	    // b) Enter the tapped item — triggers Framer's onHoverStart handler
-	    //    which re-renders the description panel with this service's content.
+	    // Activate the tapped item — triggers Framer's onHoverStart which
+	    // updates the description panel content.
 	    ptrEvent('pointerover',  link, true,  true);
 	    ptrEvent('pointerenter', link, false, false);
 	    msEvent('mouseover',     link, true);
 	    msEvent('mouseenter',    link, false);
 	    prevLink = link;
 
-	    // c) Force the description visible after React re-renders (~100ms).
-	    //    .framer-vqugsr keeps opacity:0 on mobile because Framer never
-	    //    triggers hover on touch devices.
-	    setTimeout(function () {
-	      var desc = document.querySelector('.framer-vqugsr');
-	      if (desc) {
-	        desc.style.transition = 'opacity 0.35s ease';
-	        desc.style.opacity = '1';
-	      }
-	      setTimeout(function () {
-	        var d = document.querySelector('.framer-vqugsr');
-	        if (d) d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-	      }, 400);
-	    }, 100);
+	    // Thaw animations after React has finished re-rendering (~80ms).
+	    // The description panel is always-visible via CSS above so no
+	    // opacity manipulation or scrollIntoView is needed.
+	    setTimeout(thawAnimations, 80);
 	  }
 
-	  // Find the tapped link by coordinate hit-test (links have pointer-events:none
-	  // so e.target is never the <a> itself).
+	  // Coordinate hit-test — links have pointer-events:none so e.target
+	  // is never the <a> itself.
 	  function findLinkAt(x, y) {
 	    var links = document.querySelectorAll(
 	      '.framer-phl2vz a[data-framer-name="Phone active"], .framer-phl2vz a[data-framer-name="Phone inactive"]'
@@ -644,9 +671,8 @@
 	    if (link) activateItem(link);
 	  }
 
-	  // Attach to a stable document-level listener — the items container
-	  // (.framer-phl2vz) may be re-created by React after state changes,
-	  // so document-level delegation avoids losing the listener.
+	  // Document-level delegation — the container may be re-created by React
+	  // after state changes, so we can't attach directly to it.
 	  document.addEventListener('touchstart', handleTap, { passive: true });
 	  document.addEventListener('click', handleTap, true);
 	})();
