@@ -497,6 +497,16 @@
 	  [data-framer-name="Cards"] .framer-h1odsg p,
 	  [data-framer-name="Cards"] .framer-h1odsg p strong {
 	    font-size: 20px !important;
+	    /* Allow proper German syllable-boundary hyphenation as a last resort
+	       (lang="de" is already set on <html> so the browser knows the rules). */
+	    hyphens: auto !important;
+	    overflow-wrap: break-word !important;
+	  }
+	  /* Switch service cards to 1 column on mobile so each card is full-width
+	     (~350px). "Suchmaschinenoptimierung (SEO)" at 20px is ~320px and fits
+	     cleanly in a single column but overflows any 2-column card (~167px). */
+	  [data-framer-name="Cards"] .framer-h49kn8 {
+	    grid-template-columns: repeat(1, 1fr) !important;
 	  }
 	}
 	</style>
