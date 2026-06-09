@@ -335,6 +335,19 @@
 
 	
 	
+<style id="cl-services-extra-cards-icons">
+/* The Marketing Strategies and Culture Work card icons fill the entire
+   image area because their PNGs have no built-in padding. Scale them down
+   and use contain so they sit centred with breathing room, matching the
+   visual weight of the other service card icons. */
+.cl-card-mktstrat [data-framer-background-image-wrapper="true"] img,
+.cl-card-culture2 [data-framer-background-image-wrapper="true"] img {
+  object-fit: contain !important;
+  object-position: center !important;
+  padding: 18% !important;
+  box-sizing: border-box !important;
+}
+</style>
 <script id="cl-services-extra-cards">
 (function () {
   var SPECS = [
