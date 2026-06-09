@@ -491,7 +491,13 @@
 	    overflow-wrap: normal !important;
 	  }
 	}
-	@media (max-width: 809px) {
+	/* Phone-mockup caption — all breakpoints; mobile @media below overrides to 12px */
+	[data-framer-name="24/7 priority care"] h3,
+	[data-framer-name="Real-Time Support"] p {
+	  --framer-font-size: 14px !important;
+	  font-size: 14px !important;
+	}
+		@media (max-width: 809px) {
 	  /* 14px, no hyphenation — words wrap at spaces, never get split mid-word */
 	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p,
 	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p strong {
@@ -509,7 +515,8 @@
 	  }
 	  /* "Starke Kundenbeziehungen und Folgegeschäfte" phone-mockup caption:
 	     reduce from 20px to fit inside the narrower phone section container */
-	  [data-framer-name="24/7 priority care"] h3 {
+	  [data-framer-name="24/7 priority care"] h3,
+	  [data-framer-name="Real-Time Support"] p {
 	    --framer-font-size: 12px !important;
 	    font-size: 12px !important;
 	  }
