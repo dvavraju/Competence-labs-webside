@@ -475,6 +475,13 @@
 	.framer-text {
 	  hyphens: none !important;
 	}
+	/* "Was uns antreibt" card headings — reduce from 51px so no word breaks mid-character */
+	[data-framer-name="Services section"] h3 {
+	  --framer-font-size: 34px !important;
+	  font-size: 34px !important;
+	  word-break: normal !important;
+	  overflow-wrap: normal !important;
+	}
 	/* Target ALL card title SSR variants (mobile/tablet/desktop) via stable
 	   data-framer-name attribute instead of a single breakpoint class */
 	[data-framer-name="Cards"] [data-framer-name="Contact us"] p,
