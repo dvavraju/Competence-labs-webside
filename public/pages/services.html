@@ -472,36 +472,40 @@
 	
 
 	<style id="cl-german-nobreak">
-	/* Global: prevent ugly mid-character breaks without hyphens on body text. */
 	.framer-text {
-	  word-break: normal !important;
 	  hyphens: none !important;
 	}
-	/* Card titles: use proper German syllable-boundary hyphenation (lang=de is
-	   on <html>) so long compound words like "Suchmaschinenoptimierung (SEO)"
-	   break cleanly as "Suchmaschinen-" / "optimierung (SEO)" instead of
-	   overflowing and being clipped. Font sizes reduced from 36px so the words
-	   don't need too many lines. */
-	[data-framer-name="Cards"] .framer-h1odsg p,
-	[data-framer-name="Cards"] .framer-h1odsg p strong {
+	/* Target ALL card title SSR variants (mobile/tablet/desktop) via stable
+	   data-framer-name attribute instead of a single breakpoint class */
+	[data-framer-name="Cards"] [data-framer-name="Contact us"] p,
+	[data-framer-name="Cards"] [data-framer-name="Contact us"] p strong {
 	  font-size: 26px !important;
-	  hyphens: auto !important;
-	  overflow-wrap: break-word !important;
+	  hyphens: none !important;
+	  overflow-wrap: normal !important;
 	}
 	@media (max-width: 1199px) and (min-width: 810px) {
-	  [data-framer-name="Cards"] .framer-h1odsg p,
-	  [data-framer-name="Cards"] .framer-h1odsg p strong {
+	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p,
+	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p strong {
 	    font-size: 22px !important;
-	    hyphens: auto !important;
-	    overflow-wrap: break-word !important;
+	    hyphens: none !important;
+	    overflow-wrap: normal !important;
 	  }
 	}
 	@media (max-width: 809px) {
-	  [data-framer-name="Cards"] .framer-h1odsg p,
-	  [data-framer-name="Cards"] .framer-h1odsg p strong {
+	  /* 14px, no hyphenation — words wrap at spaces, never get split mid-word */
+	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p,
+	  [data-framer-name="Cards"] [data-framer-name="Contact us"] p strong {
 	    font-size: 14px !important;
-	    hyphens: auto !important;
+	    hyphens: none !important;
 	    overflow-wrap: break-word !important;
+	  }
+	  /* Marketingstrategien: 12px single-word, fits in 127px content area on
+	     one line (19 chars × 12px ≈ 118px < 127px) */
+	  .cl-card-mktstrat [data-framer-name="Contact us"] p,
+	  .cl-card-mktstrat [data-framer-name="Contact us"] p strong {
+	    font-size: 12px !important;
+	    hyphens: none !important;
+	    overflow-wrap: normal !important;
 	  }
 	}
 	</style>
