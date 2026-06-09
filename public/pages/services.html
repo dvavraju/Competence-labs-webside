@@ -472,33 +472,33 @@
 	
 
 	<style id="cl-german-nobreak">
-	/* Prevent mid-character line breaks on German compound words site-wide.
-	   Browser default (overflow-wrap:normal) only wraps at natural break points
-	   (spaces/hyphens). Adding hyphens:none stops automatic soft-hyphenation. */
+	/* Global: prevent ugly mid-character breaks without hyphens on body text. */
 	.framer-text {
-	  overflow-wrap: normal !important;
 	  word-break: normal !important;
 	  hyphens: none !important;
 	}
-	/* Services page card titles: reduce from 36px so compound words like
-	   "Marketingstrategien" and "Suchmaschinenoptimierung" fit the 3-col
-	   card width without wrapping. */
+	/* Card titles: use proper German syllable-boundary hyphenation (lang=de is
+	   on <html>) so long compound words like "Suchmaschinenoptimierung (SEO)"
+	   break cleanly as "Suchmaschinen-" / "optimierung (SEO)" instead of
+	   overflowing and being clipped. Font sizes reduced from 36px so the words
+	   don't need too many lines. */
 	[data-framer-name="Cards"] .framer-h1odsg p,
 	[data-framer-name="Cards"] .framer-h1odsg p strong {
-	  font-size: 28px !important;
+	  font-size: 26px !important;
+	  hyphens: auto !important;
+	  overflow-wrap: break-word !important;
 	}
 	@media (max-width: 1199px) and (min-width: 810px) {
 	  [data-framer-name="Cards"] .framer-h1odsg p,
 	  [data-framer-name="Cards"] .framer-h1odsg p strong {
-	    font-size: 24px !important;
+	    font-size: 22px !important;
+	    hyphens: auto !important;
+	    overflow-wrap: break-word !important;
 	  }
 	}
 	@media (max-width: 809px) {
 	  [data-framer-name="Cards"] .framer-h1odsg p,
 	  [data-framer-name="Cards"] .framer-h1odsg p strong {
-	    /* 14px fits "Suchmaschinenoptimierung" within a ~167px 2-col card.
-	       hyphens:auto uses the de lang on <html> to break at proper German
-	       syllable boundaries — "Suchmaschinen-" / "optimierung (SEO)". */
 	    font-size: 14px !important;
 	    hyphens: auto !important;
 	    overflow-wrap: break-word !important;
