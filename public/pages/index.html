@@ -958,6 +958,16 @@
 	.framer-LDFDa .framer-x2ck6z {
 		background-color: #0c0c0c !important;
 	}
+
+	/* "Mask Mobile" dark overlay (framer-exwegs) inside the CTA-banner logo
+	   component. In the Tablet-1 variant (framer-v-zzcqd4) the component
+	   overrides overflow:visible, letting the near-black mask bleed outside
+	   its container and appear as a black strip between the hero and the next
+	   section. The mask served as a dark scrim in the original dark theme —
+	   it is not needed in the white theme, so hide it entirely. */
+	.framer-g72BF .framer-exwegs {
+		display: none !important;
+	}
 	</style>
 	<script id="cl-global-header-logo-script">
 	(function() {
