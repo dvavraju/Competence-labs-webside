@@ -328,6 +328,11 @@
     // ── Footer ─────────────────────────────────────────────────────────────
     "We are Global": "Wir sind global",
 
+    // ── Homepage eyebrow labels / CTA ──────────────────────────────────────
+    "Selected work": "Ausgewählte Arbeiten",
+    "Services": "Dienstleistungen",
+    "Meet our team": "Unser Team kennenlernen",
+
     // ── Contact form (homepage CTA + /contact) ────────────────────────────
     "Get in touch": "Nehmen Sie Kontakt auf",
 
