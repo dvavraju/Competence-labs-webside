@@ -312,6 +312,15 @@
     "Derma-Firma": "Cosmetics company",
     "Dr.med. dent. Imre Jancsecz Zahnarztpraxis": "Maniya Kids",
     "Zahnklinik": "Kids brand",
+
+    // ── "WACHSTUM IN BEWEGUNG" award/stat cards (services page) ───────────────
+    "2.5x ROAS": "2,5x ROAS",
+    "Paid Media ROI": "ROI bezahlter Medien",
+    "3M+ Impressions": "3 Mio.+ Impressionen",
+    "Reach & Visibility": "Reichweite & Sichtbarkeit",
+    "85% Repeat Rate": "85 % Wiederholungsrate",
+    "Retention & Relationships": "Kundenbindung & Beziehungen",
+    "Engagement Performance": "Engagement-Leistung",
   };
 
   // ── Utilities ──────────────────────────────────────────────────────────────
@@ -686,6 +695,10 @@
       if (observerPaused) return;
       let hasText = false;
       for (const m of mutations) {
+        // Framer's hover/active-state transitions (e.g. the homepage services
+        // ticker) overwrite an existing text node's data in place rather than
+        // swapping in new nodes — childList alone misses these.
+        if (m.type === 'characterData') { hasText = true; break; }
         for (const node of m.addedNodes) {
           if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
             hasText = true; break;
@@ -699,7 +712,7 @@
       // Resume after a tick so we don't loop
       setTimeout(() => { observerPaused = false; }, 50);
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
   // ── Run on DOMContentLoaded, then again post-Framer hydration ──────────────
