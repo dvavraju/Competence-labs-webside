@@ -118,12 +118,12 @@
 
     // ── Selected work ───────────────────────────────────────────────────────
     "Designstudio": "Design Studio",
-    "Zahnklinik": "Dental Clinic",
-    "Derma-Firma": "Derma Firm",
+    "Zahnklinik": "Kids brand",
+    "Derma-Firma": "Cosmetics company",
     "Facility Management und Reinigung": "Facility Management and Cleaning",
-    "Dr.med. dent. Imre Jancsecz Zahnarztpraxis": "Dr.med. dent. Imre Jancsecz Dental Practice",
+    "Dr.med. dent. Imre Jancsecz Zahnarztpraxis": "Maniya Kids",
     "m-Aktas": "m-Aktas",
-    "MS-thetik": "MS-thetik",
+    "MS-thetik": "Kamira",
     "Digital": "Digital",
 
     // ── About page ──────────────────────────────────────────────────────────
@@ -306,6 +306,12 @@
       "Wir sind im Gespräch, um eine großartige CMO zu gewinnen. Wir halten Sie auf dem Laufenden.",
     "We develop comprehensive brand identities, including logo design, visual language, messaging architecture, and brand guidelines, for both new and rebranding clients.":
       "Wir entwickeln umfassende Markenidentitäten – einschließlich Logodesign, visueller Sprache, Botschaftsarchitektur und Markenrichtlinien – für neue Kunden und für Kunden im Rebranding-Prozess.",
+
+    // ── Selected work renames (apply regardless of language) ─────────────────
+    "MS-thetik": "Kamira",
+    "Derma-Firma": "Cosmetics company",
+    "Dr.med. dent. Imre Jancsecz Zahnarztpraxis": "Maniya Kids",
+    "Zahnklinik": "Kids brand",
   };
 
   // ── Utilities ──────────────────────────────────────────────────────────────
@@ -363,6 +369,13 @@
   const hideLocale = document.createElement('style');
   hideLocale.textContent = '.framer-locale-picker { display: none !important; }';
   document.head.appendChild(hideLocale);
+
+  // ── Re-center the Kamira portfolio image ────────────────────────────────────
+  // Framer's compiled bundle hardcodes object-position on this image, re-applying
+  // it on every hydration pass — an !important rule is the only override that sticks.
+  const kamiraImageFix = document.createElement('style');
+  kamiraImageFix.textContent = 'img[src="/assets/images/portfolio-8.png"] { object-position: center !important; }';
+  document.head.appendChild(kamiraImageFix);
 
   // ── Build the switcher DOM element ────────────────────────────────────────
   function buildSwitcher() {
