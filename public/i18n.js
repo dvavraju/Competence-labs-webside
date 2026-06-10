@@ -94,6 +94,9 @@
     "Ob es sich um ein neues Projekt oder eine kurze Frage handelt, wir sind hier, um Kontakte zu knüpfen.":
       "Whether it's a new project or a quick question, we're here to connect.",
     "In Partnerschaft mit RevolutionX.Studio": "In partnership with RevolutionX.Studio",
+    // Pre-existing duplicate-letter bug in the English source content for the
+    // footer "We are Global" heading (split <a>W</a> + sibling text node).
+    "WWe are Global": "We are Global",
     "Arbeit, die für sich spricht": "Work that speaks for itself",
     "Competence Labs ist eine Full-Service-Agentur mit Sitz in Frankfurt am Main, Deutschland. Wir liefern integrierte Lösungen für Unternehmen auf der ganzen Welt.":
       "Competence Labs is a full-service agency headquartered in Frankfurt am Main, Germany. We deliver integrated solutions for companies worldwide.",
@@ -321,6 +324,37 @@
     "85% Repeat Rate": "85 % Wiederholungsrate",
     "Retention & Relationships": "Kundenbindung & Beziehungen",
     "Engagement Performance": "Engagement-Leistung",
+
+    // ── Footer ─────────────────────────────────────────────────────────────
+    "We are Global": "Wir sind global",
+
+    // ── Contact form (homepage CTA + /contact) ────────────────────────────
+    "Get in touch": "Nehmen Sie Kontakt auf",
+
+    // ── services.html testimonials (English fallback for layers that show
+    //    correct German on the homepage's equivalent cards) ───────────────
+    "Our work speaks for itself, but our clients say it even better.":
+      "Unsere Arbeit spricht für sich, aber unsere Kunden sagen es noch besser.",
+    "They helped us shape our brand identity from scratch, giving us a website that perfectly reflects our values.":
+      "Vom Logo bis zur Markteinführung haben sie jedes Detail auf den Punkt gebracht.",
+
+    // ── /contact page ──────────────────────────────────────────────────────
+    "Fill out the form below or reach out via email we’ll get back to you as soon as possible. Let’s create something great together.":
+      "Füllen Sie das Formular unten aus oder schreiben Sie uns eine E-Mail – wir melden uns so schnell wie möglich bei Ihnen. Lassen Sie uns gemeinsam etwas Großartiges erschaffen.",
+    "We’ve heard it all. Here’s everything you need to know before working with us.":
+      "Wir haben alles gehört. Hier finden Sie alles, was Sie wissen müssen, bevor Sie mit uns zusammenarbeiten.",
+
+    // ── /404 page ───────────────────────────────────────────────────────────
+    "The page you are looking for could not be found":
+      "Die gesuchte Seite konnte nicht gefunden werden",
+    "Back to Homepage": "Zurück zur Startseite",
+  };
+
+  // ── Form placeholder text (English source, only swapped for lang='de') ───
+  const PLACEHOLDER_DE = {
+    "E-mail *": "E-Mail *",
+    "Phone": "Telefon",
+    "Message (Tell us about your project)": "Nachricht (Erzählen Sie uns von Ihrem Projekt)",
   };
 
   // ── Utilities ──────────────────────────────────────────────────────────────
@@ -372,6 +406,56 @@
         node.textContent = leading + translated + trailing;
       }
     }
+  }
+
+  /**
+   * The footer "We are Global" heading is split by Framer into a one-letter
+   * <a class="framer-text framer-styles-preset-bq16ho"> ("W") followed by a
+   * sibling text node ("e are Global") — translateNodes only ever sees the
+   * "e are Global" half, so the dict lookup for the full phrase never hits.
+   * Recombine the two, look up the whole phrase, then split the translation
+   * back across the same two nodes (only when the translation still starts
+   * with the same first character, so the link element keeps its content).
+   */
+  function translateSplitFirstLetter(root, dict) {
+    root.querySelectorAll('a.framer-styles-preset-bq16ho').forEach(function (a) {
+      if (a.children.length > 0 || a.textContent.length !== 1) return;
+      const next = a.nextSibling;
+      if (!next || next.nodeType !== Node.TEXT_NODE) return;
+      const combined = a.textContent + next.textContent;
+      const translated = dict[combined.trim()];
+      if (translated && translated[0] === a.textContent) {
+        const trailing = next.textContent.match(/\s*$/)[0];
+        next.textContent = translated.slice(1) + trailing;
+      }
+    });
+  }
+
+  /**
+   * Footer "About" link: in the German source content this layer's text is
+   * the bare word "Um" — a leftover translation slip in the Framer project
+   * itself, not an English fallback our dicts can catch. "Um" is far too
+   * common a German word to safely rewrite via translateNodes, so relabel
+   * just this one link (identified by its href) to "Über".
+   */
+  function fixFooterAboutLink(root) {
+    if (lang !== 'de') return;
+    root.querySelectorAll('a.framer-styles-preset-bq16ho[href$="/about"]').forEach(function (a) {
+      if (a.textContent.trim() === 'Um') a.textContent = 'Über';
+    });
+  }
+
+  /**
+   * Contact-form placeholders ("E-mail *", "Phone", etc.) live in the
+   * `placeholder` attribute, which translateNodes' text-node walk never
+   * touches — translate them separately for the 'de' pass.
+   */
+  function translatePlaceholders(root) {
+    if (lang !== 'de') return;
+    root.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function (el) {
+      const translated = PLACEHOLDER_DE[el.placeholder];
+      if (translated !== undefined) el.placeholder = translated;
+    });
   }
 
   // ── Hide Framer built-in locale picker ─────────────────────────────────────
@@ -684,6 +768,9 @@
     if (!dict) return;
     translateNodes(document.body, dict);
     translateLetterSpanHeadings(document.body, dict);
+    translateSplitFirstLetter(document.body, dict);
+    fixFooterAboutLink(document.body);
+    translatePlaceholders(document.body);
   }
 
   // ── MutationObserver: catch text added by Framer after hydration ───────────
@@ -709,6 +796,9 @@
       if (!hasText) return;
       observerPaused = true;
       translateNodes(document.body, dict);
+      translateSplitFirstLetter(document.body, dict);
+      fixFooterAboutLink(document.body);
+      translatePlaceholders(document.body);
       // Resume after a tick so we don't loop
       setTimeout(() => { observerPaused = false; }, 50);
     });
