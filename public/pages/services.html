@@ -198,6 +198,20 @@
   }
 </style>
 
+<style id="cl-services-hero-heading-mobile-spacing">
+  /* Per request: on mobile the "Welcome to Future Technology Solutions"
+     heading sat almost flush against the header (logo/MENU row) with too
+     little breathing room. The hero content (.framer-807ktm) is centered
+     within a fixed-height flex column, so a margin-top here only shifts the
+     centered block by half its value -- 120px margin yields the requested
+     60px downward shift of the heading, with no overflow/clipping. */
+  @media (max-width: 809.98px) {
+    .framer-807ktm {
+      margin-top: 120px !important;
+    }
+  }
+</style>
+
 	
 
 
