@@ -183,6 +183,21 @@
   #__framer-editorbar { display: none !important; }
 </style>
 
+<style id="cl-services-transform-card-mobile">
+  /* Per request: on mobile the "Transform Companies" card (.framer-b61ygv,
+     the navy-tinted blurred panel in the hero) had only 24px top/bottom
+     padding, so its 5-line description ran almost to the bottom edge.
+     Bumping the vertical padding and adding a soft light border/shadow
+     leans into the existing backdrop-blur for a clearer "glass" panel look. */
+  @media (max-width: 809.98px) {
+    .framer-b61ygv {
+      padding: 40px 32px !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    }
+  }
+</style>
+
 	
 
 
