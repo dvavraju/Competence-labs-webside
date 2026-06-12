@@ -183,6 +183,25 @@
   #__framer-editorbar { display: none !important; }
 </style>
 
+<style id="cl-team-cards-mobile-gap">
+  /* Per request: on mobile the "Our Leaders" team cards (Samy Seif, Coming
+     soon, Vinzent Samuel) have a fixed 766px container height left over from
+     the desktop grid layout, but the stacked mobile content only needs
+     ~650px — leaving a large empty gap below each bio before the next card.
+     Letting these size to their content and trimming the row gap to 20px
+     removes that empty space. */
+  @media (max-width: 809.98px) {
+    .framer-13b5sxv { gap: 20px !important; }
+    .framer-1morspg-container,
+    .framer-aztr8z-container,
+    .framer-vnnyr6-container,
+    .framer-72qxl6,
+    .framer-1dc0sy5 {
+      height: auto !important;
+    }
+  }
+</style>
+
 	
 
 
