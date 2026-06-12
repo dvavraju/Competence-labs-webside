@@ -113,7 +113,7 @@
     "und Strategen": "and strategists",
     "konzentriert sich auf die Benutzererfahrung": "focuses on user experience",
     "Mitbegründer und Geschäftsführer": "Co-Founder and Managing Director",
-    "Führung": "Leadership",
+    "Führung": "Leaders",
     "Chief Marketing Officer, der die Marketingstrategie, die Kampagnendurchführung und die kundenorientierte Kommunikation der Agentur überwacht.":
       "Chief Marketing Officer overseeing the agency's marketing strategy, campaign execution, and client-facing communications.",
     "Vinzent Samuel Kirchberger verbindet als Chief Operations Officer operative Effizienz mit einem starken Verständnis für modernes Marketing. Durch klare Prozesse und strukturierte Abläufe sorgt er für eine professionelle und skalierbare Umsetzung von Kundenprojekten.":
